@@ -38,11 +38,7 @@ extensions = [
     'sphinx.ext.doctest',
     'sphinx.ext.todo',
     'sphinx.ext.viewcode',
-    'sphinx.ext.graphviz',
-    'sphinxcontrib.plantuml'
 ]
-
-plantuml = 'java -jar /usr/local/Cellar/plantuml/1.2018.1/libexec/plantuml.jar'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
