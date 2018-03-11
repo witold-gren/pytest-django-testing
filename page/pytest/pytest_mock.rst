@@ -482,7 +482,7 @@ tworzenia patch wygląda nieco inaczej.
     @patch('models.SpecialModel')
     def test_patch_pony(mockspecialmodel):
 
-Więcej szczegułów znajdziemy w dokumentacji https://docs.python.org/3/library/unittest.mock.html#where-to-patch.
+Więcej szczegółów znajdziemy w dokumentacji https://docs.python.org/3/library/unittest.mock.html#where-to-patch.
 
 
 Jak działa ``autospec``?
@@ -497,10 +497,6 @@ które nie są zdefiniowane w rzeczywistej klasie.
 Podanie wartości ``True`` będzie na tworzyć Mock z dokładnymi parametrami na podstawie
 patchowanej klasy/funkcji. Podanie wartości konkretnego obiektu utworzy nam taki właśnie
 obiekt.
-
-.. code-block:: python
-
-    pass
 
 
 Proste testowanie z Mock
@@ -558,15 +554,266 @@ Aby to sprawdzić wykorzystujemy inną metodę specialną `assert_called_with`.
         external_obj.setup.assert_called_with(cache=True, max_connections=256)
 
 
-Moduły powiązane
-----------------
+Jednak nie zawsze możemy przekazać obiekty do wnętrza naszych klas, dlatego teraz
+spróbujemy wykorzystać ``patch`` do tego aby zastąpić pewną funkcjonalność wewnątrz
+naszego kodu. Poniżej zademonstruję przykład wykorzystujący wbudowaną bibliotekę ``os``.
+
+.. code-block:: python
+
+    #fileinfo.py
+    import os
+
+    class FileInfo:
+        def __init__(self, path):
+            self.original_path = path
+            self.filename = os.path.basename(path)
+
+        def get_info(self):
+            return self.filename, self.original_path, os.path.abspath(self.filename)
+
+Normalne wywołanie tej klasy spowoduje wyświetlenie informacji o pliku (jest to bardzo
+prosta klasa, w realnym świecie była by ona bezuzyteczna, służy ona jedynie aby pokazać
+jak działa `patch`). Inicjując powyższą klasę musimy podać nazwę pliku. Poniżej pokazano
+proste działanie powyższej klasy.
+
+.. code-block:: python
+
+    >>> f = FileInfo('some_file.txt')
+    >>> f.filename
+    some_file.txt
+    >>> f.original_path
+    some_file.txt
+    >>> f.get_info()
+    ('some_file.txt', 'some_file.txt', '/home/xxx/some_file.txt')
+
+
+Pisząc testy będziemy chcieli sprawdzić czy czy powyżej zwracane wartości sa poprawne. Jako
+pierwsze sprawdzimy czy waertość ``filename`` zwraca nam poprawnie nazwę.
+
+.. code-block:: python
+
+    #test_fileinfo.py
+    from unittest.mock import patch
+    from fileinfo import FileInfo
+
+    def test_filename():
+        filename = 'somefile.ext'
+        fi = FileInfo(filename)
+        assert fi.filename == filename
+
+    def test_filename_with_relative_path():
+        filename = 'somefile.ext'
+        relative_path = '../{}'.format(filename)
+        fi = FileInfo(relative_path)
+        assert fi.filename == filename
+
+Następnie sprawdzimy czy ``original_path`` zwróci nam dokładnie taką wartość jaką podaliśmy
+podczas tworzenia obiektu klasy.
+
+.. code-block:: python
+
+    #test_fileinfo.py
+    from unittest.mock import patch
+    from fileinfo import FileInfo
+
+    def test_filename():
+        filename = 'somefile.ext'
+        fi = FileInfo(filename)
+        assert fi.original_path == filename
+
+    def test_filename_with_relative_path():
+        filename = 'somefile.ext'
+        relative_path = '../{}'.format(filename)
+        fi = FileInfo(relative_path)
+        assert fi.original_path == relative_path
+
+Utworzyliśmy jednak dodatkową metodę ``get_info``, która zwraca nam krotkę z dwoma powyżej
+przetestowanymi wartościami oraz śieżkę absolutną do pliku. I tutaj jest mały problem.
+Uruchamiając testy na różnych komuoterach prawdopodobnie absolutna ścieżka do pliku będzie
+różna (zależna od miejsca gdzie został uruchomiony projekt). Aby móc przetestować tę część
+kodu musimy posłużyć się ``patch``. Poniżej został pokazany kod w jaki sposób utworzyć łatkę
+na moduł ``os.path.abspath`` z wukorzystaniem kontekst menadżera.
+
+.. code-block:: python
+
+    def test_get_info():
+        filename = 'somefile.ext'
+        original_path = '../{}'.format(filename)
+
+        with mock.patch('os.path.abspath') as abspath_mock:
+            test_abspath = 'some/abs/path'
+            abspath_mock.return_value = test_abspath
+            fi = FileInfo(original_path)
+            assert fi.get_info() == (filename, original_path, test_abspath)
+
+Zamiast korzystać z kontekstu menadżera możemy wykorzystać dekorator. W takim przypadku
+dodajemy jedną zmienną to funkcji testującej, która zwróci nam Mock obiektu ``abspath_mock``.
+
+.. code-block:: python
+
+    @mock.patch('os.path.abspath')
+    def test_get_info(abspath_mock):
+        filename = 'somefile.ext'
+        original_path = '../{}'.format(filename)
+
+        test_abspath = 'some/abs/path'
+        abspath_mock.return_value = test_abspath
+        fi = FileInfo(original_path)
+        assert fi.get_info() == (filename, original_path, test_abspath)
+
+
+Wykorzystanie kilku ``patch``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Wykorzystując nasz wcześniejszy przykad, możemy dodać do naszej klasy zwrócenie wielkości
+pliku. Aby przetestować takie zadanie musimy wykorzystać dwa patch w jednym teście.
+Poniższy przykład pokazuje jak to zrobić.
+
+.. code-block:: python
+
+    @patch('os.path.getsize')
+    @patch('os.path.abspath')
+    def test_get_info(abspath_mock, getsize_mock):
+        filename = 'somefile.ext'
+        original_path = '../{}'.format(filename)
+
+        test_abspath = 'some/abs/path'
+        abspath_mock.return_value = test_abspath
+
+        test_size = 1234
+        getsize_mock.return_value = test_size
+
+        fi = FileInfo(original_path)
+        assert fi.get_info() == (filename, original_path, test_abspath, test_size)
+
+
+Należy jednak pamiętać o kolejności argumentów w funkcji testujacej. Pierwszy argument funkcji
+jest wartoscią zwracaną przez dekorator znajdujacy się najbliżej funkcji. Dlaczego tak jest?
+Poniższy przedstawiono funkcję która została obudowana dwoma dekoratorami.
+
+.. code-block:: python
+
+    @decorator1
+    @decorator2
+    def myfunction():
+        pass
+
+
+W rzeczywistości ten sam efekt można uzyskać wywołując jawnie dwie funkcję które w swoich
+argumentach będą zawierać kolejne funkcje.
+
+.. code-block:: python
+
+    def myfunction():
+        pass
+    myfunction = decorator1(decorator2(myfunction))
+
+
+Dlatego kolejność argumentów jest ważna i w powyższym przykładzie będzie ona następująca.
+
+.. code-block:: python
+
+    @decorator1
+    @decorator2
+    def myfunction(args_decorator2, args_decorator1):
+        pass
+
+
+Tworzenie ``patch`` dla obiektów niemutowalnych
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Należy pamiętać, że tymczasowe zastąpienie obiektu który jest niezmienny, operacja
+tworzenia ``patch`` nie powiedzie się. Typowym przykładem tego problemu jest moduł
+``datetime``, który jest również jednym z najlepszych kandydatów do tworzenia ``patch``,
+ponieważ wyjście funkcji czasu jest z definicji zmienne w czasie. Poniższy przykład
+pokazuje proste zastosowanie powyższego problemu.
+
+.. code-block:: python
+
+    #logger.py
+    import datetime
+
+    class Logger:
+        def __init__(self):
+            self.messages = []
+
+        def log(self, message):
+            self.messages.append((datetime.datetime.now(), message))
+
+Jeśli spróbujemy napisać ``patch`` dla modułu ``datetime.datetime.now``, możemy być bardzo zaskoczeni.
+
+.. code-block:: python
+
+    from unittest.mock import patch
+    from logger import Logger
+
+    def test_init():
+        l = Logger()
+        assert l.messages == []
+
+    @patch('datetime.datetime.now')
+    def test_log(mock_now):
+        test_now = 123
+        test_message = "A test message"
+        mock_now.return_value = test_now
+
+        l = Logger()
+        l.log(test_message)
+        assert l.messages == [(test_now, test_message)]
+
+Uruchamiając powyższy test, otrzymamy błąd informujący na o braku możliwości
+ustawienia atrybutu ``datetime.datetime``.
+
+.. code-block:: python
+
+    TypeError: can't set attributes of built-in/extension type 'datetime.datetime'
+
+
+Istnieje kilka sposobów rozwiązania tego problemu, ale wszystkie z nich wykorzystują fakt,
+że podczas importowania podklasy niezmiennego obiektu, tworzona jest jego "kopia" która
+umożliwia nam utworzenia ``patch``.
+
+W pierwszym teście staramy się tworzyć ``patch`` bezpośrednio na obiekcie ``datetime.datetime.now``,
+prubując wpływająć na wbudowany moduł ``datetime``. Plik logger.py jednak importuje moduł ``datetime``,
+dzięki czemu staje się on lokalnym symbolem w module ``logger``. Ta cecha jest klucz do
+rozwiązania naszego problemu i utworzenia ``patch``.
+
+.. code-block:: python
+
+    @patch('logger.datetime.datetime')
+    def test_log(mock_datetime):
+        test_now = 123
+        test_message = "A test message"
+        mock_datetime.now.return_value = test_now
+
+        l = Logger()
+        l.log(test_message)
+        assert l.messages == [(test_now, test_message)]
+
+W tym teście zmieniliśmy dwie rzeczy. Najpierw łatamy moduł zaimportowany do pliku
+``logger.py``, a nie moduł dostarczany globalnie przez interpreter Pythona. Po drugie,
+musimy załatać cały moduł, ponieważ jest to plik importowany przez ``logger.py``.
+
+Próbując utworzyć ``patch`` dla całego modułu ``logger.datetime.datetime.now`` również
+otrzymay komunikat z błędem, poniważ obiekt jest on wciąż niezmienny.
+
+Innym możliwym rozwiązaniem tego problemu jest utworzenie funkcji, która wywołuje
+niezmienny obiekt i zwraca jego wartość.
+
+
+Wykorzystanie pytest-mock
+-------------------------
+
+Już wiemy jak działa obiekt ``Mock``, ``MagicMock`` czy ``patch``. Korzystając z dodatku
+``pytest-mock`` mamy możliwość w jeszcze prostszy sposób używania tych właśnie funkcji.
+Nie musimy korzystać z dekoratora i zastanawiać się która wartość jest pierwsza. Jedyne
+co robimy to wykrzystujemy fixture ``mocker``.
 
 .. code-block:: python
 
     import os
 
     class UnixFS:
-
         @staticmethod
         def rm(filename):
             os.remove(filename)
@@ -584,25 +831,47 @@ Moduły powiązane
         mocker.patch.object(os, 'listdir', autospec=True)
         mocked_isfile = mocker.patch('os.path.isfile')
 
-
     def test_create_mock(mocker):
         request.user = mocker.Mock(User)
 
 
+.. code-block:: python
+
+    def get_example():
+        r = requests.get('http://example.com/')
+        return r.status_code == 200
+
+    def test_get_example_passing(mocker):
+       mocked_get = mocker.patch('requests.get', autospec=True)
+       mocked_req_obj = mock.Mock()
+       mocked_req_obj.status_code = 200
+       mocked_get.return_value = mocked_req_obj
+       assert(get_example())
+
+       mocked_get.assert_called()
+       mocked_get.assert_called_with('http://example.com/')
+
+.. note::
+
+    ``pytest-mock`` wspiera następujące metody:
+
+    * mocker.patch
+    * mocker.patch.object
+    * mocker.patch.multiple
+    * mocker.patch.dict
+    * mocker.stopall()
+    * mocker.resetall()
 
 
+.. note::
 
-def get_example():
-    r = requests.get('http://example.com/')
-    return r.status_code == 200
+    Niektóre obiekty z modułu ``mock`` są dostępne bezpośrednio z ``mocker``.
 
-@mock.patch('requests.get', autospec=True)
-def test_get_example_passing(mocked_get):
-   mocked_req_obj = mock.Mock()
-   mocked_req_obj.status_code = 200
-   mocked_get.return_value = mocked_req_obj
-   assert(get_example())
-
-   mocked_get.assert_called()
-   mocked_get.assert_called_with('http://example.com/')
-
+    * mocker.Mock
+    * mocker.MagicMock
+    * mocker.PropertyMock
+    * mocker.ANY
+    * mocker.DEFAULT
+    * mocker.call
+    * mocker.sentinel
+    * mocker.mock_open
