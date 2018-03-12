@@ -1,5 +1,5 @@
 Ustawienia
-----------
+==========
 
 Testując aplikację lokalnie bardzo ważne jest aby testy uruchamiały się bardzo szybko,
 sprawia to, że nasza uwaga jest poświęcona cały czas na pisaniu dobrego kodu. Aby
@@ -8,7 +8,7 @@ przyspieszyć wykonywanie testów w Django istnieje kilka dobrych praktyk które
 
 
 Zmień hashowanie hasła
-^^^^^^^^^^^^^^^^^^^^^^
+----------------------
 
 Jest to najskuteczniejsze ustawienie, które można wykorzystać do poprawy szybkości testów.
 Może się to wydawać śmieszne, ale hashowanie haseł w Django jest bardzo mocne, dlatego
@@ -23,8 +23,8 @@ aplikacji:
     )
 
 
-Użyj szybszego systemu przechowywania danych
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Użyj SQLite w pamięci
+---------------------
 
 Obecnie najszybszą bazą danych z której korzysta Django jest SQLite. Testujemy własną
 implementację kodu, własne API i jeśli nie używamy surowych zapytań SQL,
@@ -63,7 +63,7 @@ Warto więc zmienić go na silnik ``SQLite``:
 .. note::
 
     Jeśli wykorzystujemy specyficzne rozwiązania z silnika bazy danych z której korzystamy,
-    możemy takować nasze testy markerami, zapewni nam to możliwość uruchomienia testów
+    możemy tagować nasze testy markerami, zapewni nam to możliwość uruchomienia testów
     specyficznych dla danej bazy danych oraz do szybkie testowanie zapytań napisanych
     w Django ORM.
 
@@ -86,7 +86,7 @@ wykonywania testów.
 
     # test_settings.py
 
-    if not 'not postgres' in sys.argv:
+    if not 'not postgres' in sys.argv and 'test' in sys.argv:
         DATABASES = {
             'default': {
                 'ENGINE': 'django.db.backends.sqlite3',
@@ -110,7 +110,7 @@ https://www.aychedee.com/2014/03/13/json-field-type-for-django/
 
 
 Usuń niepotrzebne middleware
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----------------------------
 
 Im więcej klas middleware, tym więcej czasu będzie potrzebne na wygenerowanie odpowiedzi (ponieważ
 wszystkie warstwy pośredniczące muszą być wykonywane sekwencyjnie przed zwróceniem ostatecznej
@@ -136,7 +136,7 @@ testowania możemy je usunąć, aby uniknąć wszystkich narzutów podczas wysy�
 
 
 Usuń niepotrzebne aplikacje
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------
 
 Istnieje kilka aplikacji, które można usunąć podczas testowania, np. ``django-debug-toolbar``
 czy ``django_extension`` spróbuj usunąć wszystkie nieużywane/niepotrzebne aplikacje podczas
@@ -144,7 +144,7 @@ wykonywania testów.
 
 
 Wyłącz debugowanie
-^^^^^^^^^^^^^^^^^^
+------------------
 
 Ustawienie parametru ``DEBUG=False`` podczas uruchamiania testów zmniejsza obciążenie
 związane z debugowaniem, dzięki czemu poprawia się szybkość wykonywania testów.
@@ -155,7 +155,7 @@ związane z debugowaniem, dzięki czemu poprawia się szybkość wykonywania tes
 
 
 Wyłącz informacje o logach
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+--------------------------
 
 Jest to znacząca modyfikacja tylko wtedy, gdy mamy ogromną ilość logowań i/lub dodatkowej
 logiki związanej z logami (np. inspekcje obiektów, ciężkie manipulacje ciągami itd.).
@@ -169,7 +169,7 @@ dodawania dodatkowego narzutu pliku I/O do pakietu testowego.
 
 
 Użyj szybszego zaplecza e-mail
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+------------------------------
 
 Domyślnie Django używa ``django.core.mail.backends.locmem.EmailBackend``, który jest
 backendem przeznaczonym do testowania w pamięci, jednak czasem mogą z nim wystąpić problemy
@@ -181,7 +181,7 @@ z powodu sprawdzanie nagłówków. Warto więc skorzystąć z alternatywnego bac
 
 
 Używaj Celery uruchamianego w pamięci
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-------------------------------------
 
 Jeśli wykorzystujesz Celery w swoich projektach warto zmienić ustawienia do testowania:
 
@@ -193,7 +193,7 @@ Jeśli wykorzystujesz Celery w swoich projektach warto zmienić ustawienia do te
 
 
 Mock, mock, mock!
-^^^^^^^^^^^^^^^^^
+-----------------
 
 Wykorzystując ``Mock`` możesz znacznie skrócić czas testowania swoich aplikacji.
 Obiekty Mock można używać podczas każdych testów, najeży jednak pamiętać aby nie tworzyć
