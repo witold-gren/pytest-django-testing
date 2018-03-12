@@ -1,13 +1,20 @@
 Ustawienia
 ----------
 
-Change password hashing
-^^^^^^^^^^^^^^^^^^^^^^^
+Testując aplikację lokalnie bardzo ważne jest aby testy uruchamiały się bardzo szybko,
+sprawia to, że nasza uwaga jest poświęcona cały czas na pisaniu dobrego kodu. Aby
+przyspieszyć wykonywanie testów w Django istnieje kilka dobrych praktyk które spowodują
+że testy będą działać odczuwalnie szybciej.
 
-This is the most effective setting you can use to improve the speed of tests, it may sounds
-ridicolous, but password hashing in Django is designed to be very strong and it makes use of
-several “hashers”, but this also means that the hashing is very slow. The fastest hasher is
-the MD5PasswordHasher, so you can use just that one in this way:
+
+Zmień hashowanie hasła
+^^^^^^^^^^^^^^^^^^^^^^
+
+Jest to najskuteczniejsze ustawienie, które można wykorzystać do poprawy szybkości testów.
+Może się to wydawać śmieszne, ale hashowanie haseł w Django jest bardzo mocne, dlatego
+korzysta on z kilku "hasherów", oznacza to jednak, że haszowanie jest bardzo powolne.
+Najszybszym hasherem jest ``MD5PasswordHasher``, dlatego warto go użyć podczas testowania
+aplikacji:
 
 .. code-block:: python
 
@@ -16,11 +23,14 @@ the MD5PasswordHasher, so you can use just that one in this way:
     )
 
 
-Use a faster storage system
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Użyj szybszego systemu przechowywania danych
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Currently the fastest database you can use with Django is SQLite. I was initially doubtful about switching from Postgres (my database of choice) to SQLite, but I’m not testing Django itself, I’m testing my own API and since I don’t use raw SQL statements the underlying storage backend should not make differences!
-So, to configure SQLite:
+Obecnie najszybszą bazą danych z której korzysta Django jest SQLite. Testujemy własną
+implementację kodu, własne API i jeśli nie używamy surowych zapytań SQL,
+bazowy mechanizm przechowywania danych nie powinien pokazywać różnic!
+
+Warto więc zmienić go na silnik ``SQLite``:
 
 .. code-block:: python
 
@@ -41,18 +51,81 @@ So, to configure SQLite:
         except ImportError:
             pass
 
+.. attention::
 
-Remove unnecessary middlewares
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    Jeśli wykorzystujemy `continuous integration` nie powinniśmy podmieniać ustawień
+    bazy danych. Takie środowisko powinno być najbardziej zbliżone do środowiska
+    produkcyjnego.
 
-Middleware layer is one of the Django features that I like the most, BUT the more middleware classes you use, the more your response time will increase (since all the middleware must be executed sequentially before returning the final HTTPResponse, ALWAYS!). So be sure to include only the stuff you really and absolutely need!
-One middleware in particular that is very slow and that I removed for the tests is:
+    Również jeśli wykonujemy testy integracyjne (nie powinny one być połączone z testami
+    jednostkowymi w tym samym pliku) nie powinniśmy również zmieniać ustawień bazy danych.
 
-We can assume that all of Django's middelware works correctly, so while testing, remove it to avoid all that overhead when making requests with the test client. Our final testing middleware settings looked like this.
+.. note::
+
+    Jeśli wykorzystujemy specyficzne rozwiązania z silnika bazy danych z której korzystamy,
+    możemy takować nasze testy markerami, zapewni nam to możliwość uruchomienia testów
+    specyficznych dla danej bazy danych oraz do szybkie testowanie zapytań napisanych
+    w Django ORM.
+
+
+.. code-block:: python
+
+    import pytest
+
+    @pytest.mark.postgres
+    class TestSpecificForPostgreSQL(TestCase):
+
+        def test_save_json_field_from_api(self):
+            ...
+
+
+Warto w ustawieniach dodać brak możliwości podmiany ustawień bazy danych podczas
+wykonywania testów.
+
+.. code-block:: python
+
+    # test_settings.py
+
+    if not 'not postgres' in sys.argv:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': ':memory:',
+            }
+        }
+
+Uruchomienie testów jest bardzo proste. Wystarczy w testach podać atrybut uruchamiający
+wszystkie testy poza testami z markerem ``postgres``.
+
+.. code-block:: bash
+
+    $ pytest -v -m "not postgres"
+
+
+Innym sposobem na rozwiązanie tego problemu jest napisanie nakładek na specyficzne pola
+dla danego silnika bazy danych. Niestety nie miałem z tym większej styczności dlatego
+przekierowuję do jednego z artykułów.
+
+https://www.aychedee.com/2014/03/13/json-field-type-for-django/
+
+
+Usuń niepotrzebne middleware
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Im więcej klas middleware, tym więcej czasu będzie potrzebne na wygenerowanie odpowiedzi (ponieważ
+wszystkie warstwy pośredniczące muszą być wykonywane sekwencyjnie przed zwróceniem ostatecznej
+odpowiedzi HTTP). Warto więc uruchomić tylko te warstwy których tak naprawdę potrzebujesz!
+
+Szczególnie jeden middleware jest bardzo wolny:
 
 .. code-block:: python
 
     django.middleware.locale.LocaleMiddleware
+
+Możemy założyć, że wszystkie middleware z Django działają poprawnie, dlatego podczas
+testowania możemy je usunąć, aby uniknąć wszystkich narzutów podczas wysyłania żądań.
+
+.. code-block:: python
 
     MIDDLEWARE_CLASSES = [
         'django.contrib.sessions.middleware.SessionMiddleware',
@@ -62,28 +135,32 @@ We can assume that all of Django's middelware works correctly, so while testing,
     ]
 
 
-Remove unnecessary apps
-^^^^^^^^^^^^^^^^^^^^^^^
+Usuń niepotrzebne aplikacje
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-There are several third party apps that you may remove during testing like the debug toolbar, try to remove all the unused/unnecessary apps.
-In my project, we had over 30 apps installed. By overriding settings for tests, I could remove unneeded apps like django_debug_toolbar, django_extension, etc.
+Istnieje kilka aplikacji, które można usunąć podczas testowania, np. ``django-debug-toolbar``
+czy ``django_extension`` spróbuj usunąć wszystkie nieużywane/niepotrzebne aplikacje podczas
+wykonywania testów.
 
 
-Turn debug off
-^^^^^^^^^^^^^^
+Wyłącz debugowanie
+^^^^^^^^^^^^^^^^^^
 
-You might be surprised, but setting DEBUG = False while running tests reduces the amount of debugging overhead that django takes and will improve your the speed of your test suite.
+Ustawienie parametru ``DEBUG=False`` podczas uruchamiania testów zmniejsza obciążenie
+związane z debugowaniem, dzięki czemu poprawia się szybkość wykonywania testów.
 
 .. code-block:: python
 
     DEBUG = False
 
 
-Turn off logging
-^^^^^^^^^^^^^^^^
+Wyłącz informacje o logach
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This is a significant modification only if we have a huge amount of logging and/or additional logic involved in logs (such object inspections, heavy string manipulation and so on), but anyway logging is futile during testing, so:
-There's no need to add file I/O overhead to your testing suite, so disable it!
+Jest to znacząca modyfikacja tylko wtedy, gdy mamy ogromną ilość logowań i/lub dodatkowej
+logiki związanej z logami (np. inspekcje obiektów, ciężkie manipulacje ciągami itd.).
+Logowanie również jest niepotrzebne podczas wykonywania testów, dlatego nie ma potrzeby
+dodawania dodatkowego narzutu pliku I/O do pakietu testowego.
 
 .. code-block:: python
 
@@ -91,20 +168,22 @@ There's no need to add file I/O overhead to your testing suite, so disable it!
     logging.disable(logging.CRITICAL)
 
 
-Use a faster Email backend (by “patching” Django)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Użyj szybszego zaplecza e-mail
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-By default Django will use django.core.mail.backends.locmem.EmailBackend, which is an in-memory backend designed for testing, however I had several problems with that backend during my tests, they did block unexplainably for ~30 seconds due to headers checking. So I decided to write my own in-memory backend which mimics the Django one but does not check email headers in order to be blazing fast:
+Domyślnie Django używa ``django.core.mail.backends.locmem.EmailBackend``, który jest
+backendem przeznaczonym do testowania w pamięci, jednak czasem mogą z nim wystąpić problemy
+z powodu sprawdzanie nagłówków. Warto więc skorzystąć z alternatywnego backendu mailowego.
 
 .. code-block:: python
 
     EMAIL_BACKEND = "django.core.mail.backends.dummy.EmailBackend"
 
 
-Use an in-memory backend for Celery
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Używaj Celery uruchamianego w pamięci
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If you are using Celery, these are my optimal settings for testing:
+Jeśli wykorzystujesz Celery w swoich projektach warto zmienić ustawienia do testowania:
 
 .. code-block:: python
 
@@ -116,117 +195,33 @@ If you are using Celery, these are my optimal settings for testing:
 Mock, mock, mock!
 ^^^^^^^^^^^^^^^^^
 
-A HUGE bottleneck of our tests was in the billing logic. We had many tests that were actually hitting billing APIs (on test accounts of course, but still really bad). By mocking those calls you can significantly reduce the testing time. Take this test that mocks if a customer has a card on file. By mocking that can_charge call and setting the return value, we avoid an API call and can still test that our code works as expected.
-
-.. code-block:: python
-
-    import mock
-    from django.test import Client
-
-    @mock.patch('billing.utils.can_charge')
-    def test_cant_charge_redirect(can_charge):
-        can_charge.return_value =False
-        response = Client().get('/checkout/')
-        self.assertRedirects(response, '/checkout/add-card/')
-
-    @mock.patch('billing.utils.can_charge')
-    def test_can_charge_ok(can_charge):
-        can_charge.return_value = True
-        response = Client().get('/checkout/')
-        self.assertEqual(response.status_code, 200)
+Wykorzystując ``Mock`` możesz znacznie skrócić czas testowania swoich aplikacji.
+Obiekty Mock można używać podczas każdych testów, najeży jednak pamiętać aby nie tworzyć
+mocków do bazy danych jeśli nie posiadamy testów integracyjnych. Więcej szczegułów
+na temat tworzenia ``Mock`` znajdziesz w module ``pytest-mock``.
 
 
-You can also mock simple model unit tests. Instead of hitting the database by creating models, use Mock objects to simulate your model
+Dodatkowe opcje
+---------------
 
-
-.. code-block:: python
-
-    import mock
-    from models import User
-
-    def test_full_name():
-        user = mock.Mock(spec=User)
-        user.first, user.last = 'Test', 'Test'
-        self.assertEqual(user.full_name, 'Test Test')
-
-
-TOHETHER:
-^^^^^^^^^
-
-.. code-block:: python
-
-    #!/usr/bin/env python
-    import os
-    import sys
-
-    if __name__ == "__main__":
-        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "marketplace.settings")
-
-        from django.core.management import execute_from_command_line
-        from django.conf import settings
-
-        if 'test' in sys.argv:
-            import logging
-            logging.disable(logging.CRITICAL)
-            settings.DEBUG = False
-            settings.TEMPLATE_DEBUG = False
-            settings.PASSWORD_HASHERS = [
-                'django.contrib.auth.hashers.MD5PasswordHasher',
-            ]
-            settings.DATABASES = {
-                'default': {
-                    'ENGINE': 'django.db.backends.sqlite3',
-                    'NAME': 'test_database',
-                }
-            }
-            settings.MIDDLEWARE_CLASSES = [
-                'django.contrib.sessions.middleware.SessionMiddleware',
-                'django.middleware.csrf.CsrfViewMiddleware',
-                'django.contrib.auth.middleware.AuthenticationMiddleware',
-                'django.contrib.messages.middleware.MessageMiddleware',
-            ]
-
-        if 'test' in sys.argv and '--time' in sys.argv:
-            sys.argv.remove('--time')
-            from django import test
-            import time
-
-            def setUp(self):
-                self.startTime = time.time()
-
-            def tearDown(self):
-                total = time.time() - self.startTime
-                if total > 0.5:
-                    print("\n\t\033[91m%.3fs\t%s\033[0m" % (
-                        total, self._testMethodName)
-
-            test.TestCase.setUp = setUp
-            test.TestCase.tearDown = tearDown
-
-        execute_from_command_line(sys.argv)
-
-
-Testowanie specyficznych pól z postgresql q SQLite
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-https://www.aychedee.com/2014/03/13/json-field-type-for-django/
-
-
-
+Domyślne ustawienie lokalizacj dla Faker
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: python
 
     import pytest
-    from pytest_django.lazy_django import skip_if_no_django
-    from pytest_django.live_server_helper import LiveServer
     from requests_mock import MockerCore
     from factory.faker import Faker
     from faker import config
 
-
     Faker._DEFAULT_LOCALE = 'pl_PL'
     config.DEFAULT_LOCALE = 'pl_PL'
 
+
+Funkcja testująca metody widoków
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
 
     def setup_view(view, request, *args, **kwargs):
         """
@@ -248,6 +243,11 @@ https://www.aychedee.com/2014/03/13/json-field-type-for-django/
         return view
 
 
+Funkcja testująca metody widoków API
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
     def api_setup_view(view, request, action=None, *args, **kwargs):
         """
         request = HttpRequest()
@@ -262,25 +262,59 @@ https://www.aychedee.com/2014/03/13/json-field-type-for-django/
         return view
 
 
+Klasa APIRequestFactory jako fixture
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
     @pytest.fixture()
     def api_rf():
-        """APIRequestFactory instance"""
+        """
+        APIRequestFactory instance
+        """
         skip_if_no_django()
         from rest_framework.test import APIRequestFactory
         return APIRequestFactory()
 
 
-    # ----------------------------------------------------------------------------------------
-    # mój dodatek aby można było robić mock dla request do innych serwisów
-    # ----------------------------------------------------------------------------------------
+Biblioteka requests_mock jako fixture
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+    import pytest
+    from requests_mock import MockerCore
+
+    # --------------------------------------------------------------------
+    # dodatek pozwalający w łatwy sposób robić mock dla biblioteki request
+    # --------------------------------------------------------------------
 
     @pytest.yield_fixture(scope="session")
     def requests_mock():
-         mock = MockerCore()
-         mock.start()
-         yield mock
-         mock.stop()
+        """
+        def test_get_tags(self, requests_mock):
+            requests_mock.get(settings.MY_SERVICE + 'tag/', json=response)
+            cron = ImportTriviaCromJob()
+            assert list(cron.get_tags(name)) == result
+        """
+        mock = MockerCore()
+        mock.start()
+        yield mock
+        mock.stop()
 
+
+Fixture dla DjangoLiveServer w kontenerze Docker
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+    import pytest
+    from pytest_django.lazy_django import skip_if_no_django
+    from pytest_django.live_server_helper import LiveServer
+
+    # ------------------------------------------------------------------------
+    # dodatek pozwalający na uruchomienie DjangoLiveServer w kontenerze Docker
+    # ------------------------------------------------------------------------
 
     @pytest.fixture(scope='session')
     def live_server(request):
