@@ -9,7 +9,7 @@ Dlaczego pytest
 * pozwala pisać małe i łatwe testy
 * posiada mnogość pluginów jeszcze bardziej upraszczających testowanie
 * można w nim uruchomić również UnitTest
-* do porównywania wykorzystujemy tylko słowo ``assert`` a otrzymujemy bardzo szczegułowe informacje o błędach
+* do porównywania wykorzystujemy tylko słowo ``assert`` a otrzymujemy bardzo szczegółowe informacje o błędach
 * posiadamy ``fixture`` - wstrzykiwanie zależności
 * posiadamy możliwość tworzenia markerów ``pytest.mark.skipif`` czy ``pytest.mark.xfail``
 * możemy parametryzować testy zmniejszając ilość napisanego kodu
@@ -19,10 +19,10 @@ Dlaczego pytest
 
 
 .. hint::
-    Do czego służą na na co nam pozwalają fixture?
+    Do czego służą i na co nam pozwalają fixture?
 
     * unikanie samopowtarzalności w kodzie
-    * można je w łatwy posób modyfikować
+    * można je w łatwy sposób modyfikować
     * wstrzykiwanie zależności
     * można je tworzyć w bardzo łatwy sposób
 
@@ -32,7 +32,7 @@ Dlaczego pytest
     Co to są markery i jak możemy je wykorzystać?
 
     * pozwalają kontrolować co ma zostać uruchomione w teście
-    * `pytest` zawiera wbydowanych kilka markerów np. ``pytest.mark.skipif``, ``pytest.mark.xfail``, ``pytest.mark.parametrize``, ``pytest.mark.tryfirst``, ``pytest.mark.trylast`` i inne.
+    * `pytest` zawiera wbudowanych kilka markerów np. ``pytest.mark.skipif``, ``pytest.mark.xfail``, ``pytest.mark.parametrize``, ``pytest.mark.tryfirst``, ``pytest.mark.trylast`` i inne.
     * można tworzyć swoje markery, podczas uruchamiania testów można oznaczyć które mają zostać uruchomione
 
 
@@ -66,7 +66,7 @@ do poszczególnych pluginów. Przykładowa powyższa konfiguracja zawiera nagł�
 oraz trzy ustawienia:
 
 * python_files - ustawienie informujące ``pytest`` w jakich plikach ma poszukiwać testów,
-* addopts - uruchamiająć komendę ``pytest`` nie musimy za każdym razem podawać całego ciągu znaczników którymi chcemy ustawić test, w tym miejscu ustawiamy je jednorazowo i będą one automatycznie dołączane podczas uruchamiania testów. Wyjaśnienia: ``-s`` jest to skrót od ``--capture=no`` który wyłącza przechwytywanie wyjścia komunikatów np. print,``-q`` zmniejsza szczegułowość danych podczas uruchomienia testu, ``--disable-warnings`` oznaca wyłączenie podsumowania o ostrzeżenie w kodzie, ``--doctest-modules`` uruchamia wszystkie `doctests` w wszystkich plikach ``.py``.
+* addopts - uruchamiając komendę ``pytest`` nie musimy za każdym razem podawać całego ciągu znaczników którymi chcemy ustawić test, w tym miejscu ustawiamy je jednorazowo i będą one automatycznie dołączane podczas uruchamiania testów. Wyjaśnienia: ``-s`` jest to skrót od ``--capture=no`` który wyłącza przechwytywanie wyjścia komunikatów np. print, ``-q`` zmniejsza szczegółowość danych podczas uruchomienia testu, ``--disable-warnings`` oznaca wyłączenie podsumowania o ostrzeżenie w kodzie, ``--doctest-modules`` uruchamia wszystkie `doctests` we wszystkich plikach ``.py``.
 * norecursedirs - informacja które foldery należy wykluczyć podczas poszukiwania plików z testami
 
 .. tip::
@@ -76,7 +76,7 @@ oraz trzy ustawienia:
     * ``--maxfail=num`` wyjście po przekroczeniau ``num`` ilości błędnych testów
     * ``--fixtures`` pokazanie aktualnie dostępnych `fixtures`
     * ``--markers`` pokazanie wszystkich zainstalowanych `marks`
-    * ``--pdb`` uruchomienie debagera kodu
+    * ``--pdb`` uruchomienie debugera kodu
     * ``-p no:warnings`` wyłączenie ostrzeżeń podczas testów
     * ``-v``, ``-vv``, ``-vvv``, ``-vvvv`` szczegułowość komunikatów o błędach
 
@@ -84,7 +84,7 @@ oraz trzy ustawienia:
 .. tip::
 
     Inne ustawienia w pliku ``pytest.ini``:
-    * ``python_classes = *Suite`` ustawienie typu klasy która w której będą poszukiwanie testy
+    * ``python_classes = *Suite`` stawienie typu klasy, w której będą poszukiwanie testy
     * ``python_functions = *_test`` - ustawienie typu funkcji które będą uruchamiane jako testy
 
 
@@ -94,20 +94,33 @@ oraz trzy ustawienia:
 Uruchomienie testów
 -------------------
 
+Uruchomienie ``pytest`` dla konkretnego pliku
+
 .. code-block:: bash
 
     $ pytest test_mymodule.py
     $ pytest -vsl test_mymodule.py
 
+
+Uruchomienie wszystkiego co ma w nazwie `special_run`
+
+.. code-block:: bash
+
     $ pytest -k 'special_run'
+
+
+Uruchomienie testów które są udekorowane wybranym markerem `marker_name`
+
+.. code-block:: bash
+
     $ pytest -m 'marker_name'
+
+
+Jeśli posiadamy plugin `xdist` uruchomi on testy na 4 procesorach
+
+.. code-block:: bash
+
     $ pytest -n 4
-
-
-uruchomienie ``pytest`` dla konkretnego pliku
-uruchomienie wszystko co ma w nazwie `special_run`
-uruchomienie testów które są udekorowane wybranym markerem `marker_name`
-jeśli posiadamy plugin `xdist` uruchomi testy na 4 procesorach
 
 
 Oznaczanie całych klas lub modułów markerem
@@ -195,23 +208,6 @@ Jak pisać kod
     class TestCals:
 
         def test_add_method(self, calc):
-            assert calc.add(1, 1) == 2
-            assert calc.add(0, 3) == 3
-
-
-.. code-block:: python
-
-    @pytest.fixture(scope='function')
-    def calc(request):
-        c = Calc()
-        return c
-
-    class TestCals:
-
-        @pytest.mark.parametrize('a, b, exp', [
-            (1, 1, 2), (0, 3, 3)
-        ])
-        def test_add_method(self, calc, a, b, exp):
             assert calc.add(1, 1) == 2
             assert calc.add(0, 3) == 3
 

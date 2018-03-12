@@ -2,8 +2,8 @@
 Pytest FactoryBoy
 =================
 
-`Factory Boy`_ jest narzędzie tworzącym fakbyrki dla obiektów, co oznacza, że nie musimy ręcznie
-tworzyć potrzebnych obiektów to testów, ale możemy je wygenerować od razu w podanej ilości
+`Factory Boy`_ jest narzędziem tworzącym fabryki dla obiektów, co oznacza, że nie musimy ręcznie
+tworzyć potrzebnych obiektów do testów, ale możemy je wygenerować od razu w podanej ilości
 w bardzo prosty sposób. Możemy ustawiać na tworzonych obiektach własne wartości tylko dla
 zmiennych które chcemy przetestować.
 
@@ -953,7 +953,7 @@ które może być użyte w parametryzacji bez definiowania fixture w module.
 Przykłady
 ---------
 
-Poniżej przykład w jaki sposób utworzyć własny typ pole, pozwalający fabryce na generyczne
+Poniżej przykład w jaki sposób utworzyć pole własnego typu, pozwalający fabryce na generyczne
 tworzenie wartości dla wskazanego pola.
 
 .. code-block:: python

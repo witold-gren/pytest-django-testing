@@ -8,7 +8,7 @@ Wtyczka pytest-xdist rozszerza pytest o kilka unikalnych trybów wykonywania tes
   ``pytest`` w tym trybie, najpierw są uruchamiane wszystkie testy. Po ich przejściu ``pytest``
   oczekuje na zmiany w plikach. Po ich dokonaniu są uruchamiane tylko te testy które są
   zależne od zmienionych plików. Jeśli wszystko będzie poprawne, ponownie są uruchamiane
-  wszystkie testy, jeśli natomiast będa błędy, ``pytest`` testuje tylko te wybrane testy
+  wszystkie testy, jeśli natomiast będą błędy, ``pytest`` testuje tylko te wybrane testy
   do czasu aż nie przejdą poprawnie.
 
 * ``wieloprocesowe testowanie`` (`multiprocess load-balancing`): jeśli posiadasz wiele
@@ -86,7 +86,7 @@ Uruchamianie testów na wielu platformach jednoczesnie
 Określanie środowiska testowego w pliku ``.ini``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Można również ustawić automatyczne testowanie w trynie ``looponfailroots`` w pliku ini:
+Można również ustawić automatyczne testowanie w trybie ``looponfailroots`` w pliku ini:
 
 .. code-block:: bash
 

@@ -80,7 +80,7 @@ Opis działania
 
 Domyślne metody to ``django_app.get()`` oraz ``django_app.post()`` czy ``django_app.post_json()`` z opcjonalnym argumentem ``user``.
 Wywołanie metody ``django_app.reset()`` powoduje wyczyszczenie wszystkich ciasteczek oraz
-wylogowanie użytkowka.
+wylogowanie użytkownika.
 
 Aby sprawdzić status odpowiedzi:
 
@@ -120,7 +120,7 @@ Korzystając z django-webtest otrzymujesz również zmienne ``response.templates
 można skorzystać w taki sam sposób jak z klienta django. Atrybuty te zawierają listę szablonów wykorzystanych do renderowania odpowiedzi
 oraz kontekst używany do renderowania tych szablonów.
 
-Sesja jest dostępna pod ``django_app.session``. Doyślnie WebTest w każdym zapytaniu w formularzy automatycznie również
+Sesja jest dostępna pod ``django_app.session``. Domyślnie WebTest w każdym zapytaniu w formularzy automatycznie również
 wysyła zmienną ``CSRF``. Aby go wyłączyć należy skorzystać z fikstury ``django_app_factory`` i przekazać parametr ``csrf_checks=False``.
 
 

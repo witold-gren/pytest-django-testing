@@ -31,11 +31,11 @@ uruchomienia konfiguracji. Więcej informacji o konfiguracji znajdziemy w `dokum
     omit = tests/*
 
 
-Uruchomienie pytest wraz z wskazaniem pliku do kofiguracji dla ``coverage``.
+Uruchomienie pytest wraz ze wskazaniem pliku do kofiguracji dla ``coverage``.
 
 .. code-block:: bash
 
-    py.test --cov-config .coveragerc --cov=myproj myproj/tests/
+    pytest --cov-config .coveragerc --cov=myproj myproj/tests/
 
 
 Generowanie raportów
@@ -71,21 +71,21 @@ pokryty w 100%.
 
 .. code-block:: bash
 
-    py.test --cov-report term:skip-covered --cov=myproj tests/
+    $ pytest --cov-report term:skip-covered --cov=myproj tests/
 
 
 .. code-block:: bash
 
-    py.test --cov-report html
-            --cov-report xml
-            --cov-report annotate
-            --cov=myproj tests/
+    $ pytest --cov-report html
+             --cov-report xml
+             --cov-report annotate
+             --cov=myproj tests/
 
 
 Debagowanie i IDE
 -----------------
 
-Podczas gdy mamy zainstalowany dodatek używa on ``sys.settrace`` jako dostęp do kontektu.
+Podczas gdy mamy zainstalowany dodatek używa on ``sys.settrace`` jako dostęp do kontekstu.
 Dlatego wykorzystując jakiekolwiek IDE należy wyłączyć plugin aby nie powodował problemów
 podczas wykorzystywnia np. ``break point``.
 

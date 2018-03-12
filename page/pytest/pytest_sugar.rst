@@ -3,7 +3,7 @@ Pytest Sugar
 ============
 
 
-``pytest-sugar`` jest to dodatek fo ``pytest``, który w bardzo przystępny sposób pokazuje
+``pytest-sugar`` jest to dodatek do ``pytest``, który w bardzo przystępny sposób pokazuje
 awarie i błędy podczas wykonywania testów oraz podmienia pasek postępu.
 
 
