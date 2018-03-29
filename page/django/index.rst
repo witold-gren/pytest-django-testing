@@ -14,10 +14,10 @@ Rozbudowana struktura aplikacji
         ├── urls.py                     # linki do widoków oraz router
         ├── views.py                    # widoki aplikacji
         ├── forms.py                    # formularze
-        ├── managers.py                 # managery do modelów
+        ├── managers.py                 # managery i querysety dla modeli
         ├── serializers.py              # serializatory do modelów
-        ├── services.py                 # querysety
-        ├── context_processors.py       # kontekt procesory dla szxablonów
+        ├── services.py                 # domenowa logika aplikacji
+        ├── context_processors.py       # kontekst procesory dla szablonów
         ├── middleware.py               # własne middleware
         ├── task.py                     # zadania do celery
         ├── signals/                    # sygnały
