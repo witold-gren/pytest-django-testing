@@ -74,7 +74,14 @@ Możemy również utworzyć kilka obiektów:
 
 .. code-block:: python
 
+    # Zwrócenie 10 instancji, które nie są zapisane
     users = UserFactory.build_batch(10, first_name="Joe")
+
+    # Zwrócenie 10 instancji które zostały zapisane w bazie danych
+    users = UserFactory.create_batch(10, first_name="Joe")
+
+    # Zwrócenie 10 obiektu stub posiadających tylko kilka atrybutów
+    users = UserFactory.stub_batch(10, first_name="Joe")
 
 
 Typy tworzonych pól
