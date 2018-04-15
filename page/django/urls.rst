@@ -37,3 +37,11 @@ Django DRF Function View
     found = resolve(reverse('referrals'))
     assert found2.func.__name__ == get_chats.__name__
 
+Django DRF ViewSet
+^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+    def test_check_if_recent_url_exist_and_have_good_class(self):
+        found = resolve('/notifications/recent/')
+        assert found.func.cls == views.UserNotification

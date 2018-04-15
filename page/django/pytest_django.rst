@@ -318,3 +318,54 @@ Skrzynka nadawcza wiadomości e-mail, do której wysyłane są e-maile generowan
         assert m.from_email == 'from@example.com'
         assert list(m.to) == ['to@example.com']
 
+
+Metoda setUp znana z UnitTest
+-----------------------------
+
+Niestety największym dotąd nie rozwiązanym problemem jest brak możliwości tworzenia
+obiektów w bazie danych z wykorzystaniem metody `setup_class` a znanej z biblioteki
+UnitTest pod nazwą `setUpClass`.
+
+`setUpClass()` ==> `setup_class`
+`tearDownClass()` ==> `teardown_class`
+
+Natomiast aby skorzystać z znanej metody `setUp()` oraz skorzystać z bazy danych
+do tworzenia obiektów, należy nieco zmienić działanie.
+Oba poniższe przykłady działają dokładnie tak samo.
+
+.. code-block:: python
+
+    class AnimalTestCase(TestCase):
+
+        def setUp(self):
+            Animal.objects.create(name="lion", sound="roar")
+            Animal.objects.create(name="cat", sound="meow")
+
+        def test_animals_can_speak(self):
+            """Animals that can speak are correctly identified"""
+            lion = Animal.objects.get(name="lion")
+            cat = Animal.objects.get(name="cat")
+            self.assertEqual(lion.speak(), 'The lion says "roar"')
+            self.assertEqual(cat.speak(), 'The cat says "meow"')
+
+
+.. code-block:: python
+
+    @pytest.mark.django_db
+    class AnimalTestCase:
+
+        @pytest.fixture(autouse=True)
+        def setup_method(self, db):
+            Animal.objects.create(name="lion", sound="roar")
+            Animal.objects.create(name="cat", sound="meow")
+
+        def test_animals_can_speak(self):
+            """Animals that can speak are correctly identified"""
+            lion = Animal.objects.get(name="lion")
+            cat = Animal.objects.get(name="cat")
+            assert lion.speak() == 'The lion says "roar"'
+            assert cat.speak() == 'The cat says "meow"'
+
+
+https://stackoverflow.com/questions/34089425/django-pytest-setup-method-database-issue
+https://github.com/pytest-dev/pytest-django/issues/297
