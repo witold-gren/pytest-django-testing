@@ -269,10 +269,6 @@ wszystkich funkcjach. W przypadku większych `fixture` może to spowodować,
 że testy będą ładować się wolniej.
 
 
-TODO: Dokończyć tutaj!!!
-https://docs.pytest.org/en/documentation-restructure/how-to/fixture.html?highlight=autouse#autouse-fixtures-xunit-setup-on-steroids
-
-
 Ostatnim sposobem użycia `fixture`, jest ustawienie parametru `autouse` w deklaracji `fixture`.
 `Fixture` będzie automatycznie wywoływany bez jawnego deklarowania argumentów
 funkcji lub dekoratora usefixtures.
