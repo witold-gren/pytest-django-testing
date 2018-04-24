@@ -4,7 +4,7 @@ Efektywne pisanie testów w języku python
 Niniejsza dokumentacja został przygotowana aby przedstawić najbardziej efektywne techniki
 pisania testów w języku Python oraz w frameworku Django. Istnieje bardzo dużo artykułów
 i samouczków w internecie, ale żaden z nich nie zbiera całej wiedzy w jednym dokumencie.
-Są one skupione na pojedyńczych elementach testowania, lub na specyficznych problemach.
+Są one skupione na pojedynczych elementach testowania, lub na specyficznych problemach.
 
 Większość samouczków wykorzystuje domyślną bibliotekę ``UnitTest``. Brakuje jednak
 dokumentu opisującego wspaniałe narzędzie jakim jest ``PyTest`` oraz opisu pluginów które
@@ -14,10 +14,10 @@ programisty.
 Niniejszy dokument został podzielony na trzy częsci. Pierwsza opisuje zastosowanie
 modułu ``PyTest`` wraz z kilkoma bardzo przydatnymi dodatkami. Druga część opisuje
 w jaki sposób efektywnie pisać testy dla frameworka Django. Trzecia część skupia się na
-dodatkowy narzędziach które można wykorzystać w pracy z Django.
+dodatkowych narzędziach, które można wykorzystać w pracy z Django.
 
 
-Aby zainstalować wszystko opisywane paczki należy uruchomić poniższą komendę:
+Aby zainstalować wszystkie opisywane paczki, należy uruchomić poniższą komendę:
 
 .. code-block:: bash
 
@@ -54,7 +54,7 @@ Aby zainstalować wszystko opisywane paczki należy uruchomić poniższą komend
 
 .. toctree::
    :maxdepth: 1
-   :caption: Przydane moduły do pacy z Django:
+   :caption: Przydatne moduły do pracy z Django:
 
    page/modules/jupyter
    page/modules/django_extensions
