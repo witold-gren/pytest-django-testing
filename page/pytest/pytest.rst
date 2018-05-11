@@ -48,9 +48,9 @@ Konfiguracja
 ------------
 
 W katalogu głównym naszej aplikacji tworzymy plik ``pytest.ini`` w którym będzie znajdować
-się konfiguracja ``pytest``. Uzywająć ``Django`` plik ``pytest.ini`` powinien znaleźć się
+się konfiguracja ``pytest``. Używając ``Django`` plik ``pytest.ini`` powinien znaleźć się
 w katalogu w którym mamy umieszczony plik ``manage.py``, Nie jest ona wymagana,
-jednak czasem przydaje się aby zmiejszyć ilość wpisywanych komend podczas uruchamiania testów.
+jednak czasem przydaje się aby zmniejszyć ilość wpisywanych komend podczas uruchamiania testów.
 Poniżej zamieszczona jest przykładowa konfiguracja:
 
 .. code-block:: bash
@@ -61,12 +61,12 @@ Poniżej zamieszczona jest przykładowa konfiguracja:
     norecursedirs = .git .cache tmp*
 
 
-Więcej szczegułów dotyczących konfiguracji można znaleźć w `Konfiguracji pytest`_ lub w dokumentacji
+Więcej szczegółów dotyczących konfiguracji można znaleźć w `Konfiguracji pytest` lub w dokumentacji
 do poszczególnych pluginów. Przykładowa powyższa konfiguracja zawiera nagłówek ``[pytest]``,
 oraz trzy ustawienia:
 
 * python_files - ustawienie informujące ``pytest`` w jakich plikach ma poszukiwać testów,
-* addopts - uruchamiając komendę ``pytest`` nie musimy za każdym razem podawać całego ciągu znaczników którymi chcemy ustawić test, w tym miejscu ustawiamy je jednorazowo i będą one automatycznie dołączane podczas uruchamiania testów. Wyjaśnienia: ``-s`` jest to skrót od ``--capture=no`` który wyłącza przechwytywanie wyjścia komunikatów np. print, ``-q`` zmniejsza szczegółowość danych podczas uruchomienia testu, ``--disable-warnings`` oznaca wyłączenie podsumowania o ostrzeżenie w kodzie, ``--doctest-modules`` uruchamia wszystkie `doctests` we wszystkich plikach ``.py``.
+* addopts - uruchamiając komendę ``pytest`` nie musimy za każdym razem podawać całego ciągu znaczników którymi chcemy ustawić test, w tym miejscu ustawiamy je jednorazowo i będą one automatycznie dołączane podczas uruchamiania testów. Wyjaśnienia: ``-s`` jest to skrót od ``--capture=no`` który wyłącza przechwytywanie wyjścia komunikatów np. print, ``-q`` zmniejsza szczegółowość danych podczas uruchomienia testu, ``--disable-warnings`` oznacza wyłączenie podsumowania o ostrzeżenie w kodzie, ``--doctest-modules`` uruchamia wszystkie `doctests` we wszystkich plikach ``.py``.
 * norecursedirs - informacja które foldery należy wykluczyć podczas poszukiwania plików z testami
 
 .. tip::
@@ -139,8 +139,8 @@ Jeśli utworzymy dekorator markera na klasie, wszystkie testy klasy będą oznac
         def test_startup_and_more(self):
             pass
 
-Dla zachowania kompaktybilności wstecznej z wersją 2.4 możemy również użyć zmienne
-``pytestmark``. Jest to równoznaczne z utowrzeniem dekoratora z merkerem na klasie.
+Dla zachowania kompatybilności wstecznej z wersją 2.4 możemy również użyć zmienne
+``pytestmark``. Jest to równoznaczne z utworzeniem dekoratora z markerem na klasie.
 
 .. code-block:: python
 
@@ -150,7 +150,7 @@ Dla zachowania kompaktybilności wstecznej z wersją 2.4 możemy również uży�
         pytestmark = pytest.mark.webtest
 
 
-Można równiez podać kilka markerów w liście.
+Można również podać kilka markerów w liście.
 
 .. code-block:: python
 
@@ -160,7 +160,7 @@ Można równiez podać kilka markerów w liście.
         pytestmark = [pytest.mark.webtest, pytest.mark.slowtest]
 
 
-Oznaczenie całego modułu markerem można wykonać w nastepujący sposób.
+Oznaczenie całego modułu markerem można wykonać w następujący sposób.
 
 .. code-block:: python
 
@@ -177,12 +177,12 @@ stałą linię bazową, na której testy mogą być wykonywane niezawodnie i wie
 W pytest fixture, które wykraczają poza typową konfigurację i funkcjonalność.
 
 - `fixture` posiadają jawne nazwy i są aktywowane poprzez deklarowanie ich
-w funkcjach testowych, modułach, klasach lub całych projektach.
+  w funkcjach testowych, modułach, klasach lub całych projektach.
 - `fixture` są modułowe, a każde `fixture` wyzwala funkcję urządzenia,
-które może korzystać z innych `fixture`.
+  które może korzystać z innych `fixture`.
 - Możesz sparametryzować `fixture` i testy zgodnie z opcjami konfiguracji
-lub ponownie wykorzystać `fixture` w obrębie zakresów klasy, modułu lub
-całej sesji testowej.
+  lub ponownie wykorzystać `fixture` w obrębie zakresów klasy, modułu lub
+  całej sesji testowej.
 
 
 Tworzenie własnego fixture
@@ -314,14 +314,15 @@ jak pokazano w ostatnim przykładzie. `Autouse`, o ile nie jest ograniczone do z
 będzie działać na wszystkich testach w bieżącej sesji.
 
 Praca i zakres `autofocus`:
+
 - ustawienia `autouse=True` jest zgodne z `scope=`argument: jeśli `fixture`
-ma `scope='session'`, to zostanie ono uruchomione tylko raz, bez względu na to,
-gdzie zostało ono zdefiniowane.
-scope = 'class' oznacza, że ​​będzie uruchamiany raz na klasę, itd.
+  ma `scope='session'`, to zostanie ono uruchomione tylko raz, bez względu na to,
+  gdzie zostało ono zdefiniowane.
+  scope = 'class' oznacza, że ​​będzie uruchamiany raz na klasę, itd.
 - jeśli zdefiniowano `fixture` z parametrem `autouse=True` w module testowym,
-wszystkie jego funkcje testowe automatycznie będą go używać.
+  wszystkie jego funkcje testowe automatycznie będą go używać.
 - jeśli zdefiniowano `fixture` z parametrem `autouse=True` w pliku conftest.py,
-wówczas wszystkie testy we wszystkich modułach testowych poniżej jego katalogu wywołają tego `fixture`.
+  wówczas wszystkie testy we wszystkich modułach testowych poniżej jego katalogu wywołają tego `fixture`.
 
 
 Warto zauważyć, że powyższy `fixture` z argumentem `autouse` również może zostać zwykłym `fixture`,
@@ -416,17 +417,17 @@ Aby z nich skorzystać, definiujemy argument `scope`.
 Domyślnie `scope` jest ustawione na `function`. Gdzie chciałbyś użyć każdego z nich?
 
 - Możesz użyć `function`, jeśli chcesz, aby urządzenie działało po każdym pojedynczym teście.
-Jest to dobre rozwiązanie w przypadku utowrzenia małych `fixture`.
+  Jest to dobre rozwiązanie w przypadku utworzenia małych `fixture`.
 - Zakres `class`, jest wykorzystywany jeśli chcesz, aby działał on w każdej klasie.
-Zazwyczaj grupujemy testy w jednej klasie kiedy są podobne. Ten zakres jest wykorzystywany
-własnie wtedy kiedy chcemy wykonać coś jeden raz dla całej grupy testów.
+  Zazwyczaj grupujemy testy w jednej klasie kiedy są podobne. Ten zakres jest wykorzystywany
+  właśnie wtedy kiedy chcemy wykonać coś jeden raz dla całej grupy testów.
 - Zakres `module`, można użyć jeśli chcemy, aby `fixture` był uruchamiany na początku
-bieżącego pliku, a następnie zakończony po uruchomieniu wszystkich testów znajdujących się wewnątrz pliku.
-Ten zakres można wykorzystać jeśli masz `fixture`, który uzyskuje dostęp do bazy danych
-i konfiguruje bazę danych na początku modułu, a następnie finalizator zamyka połączenie.
+  bieżącego pliku, a następnie zakończony po uruchomieniu wszystkich testów znajdujących się wewnątrz pliku.
+  Ten zakres można wykorzystać jeśli masz `fixture`, który uzyskuje dostęp do bazy danych
+  i konfiguruje bazę danych na początku modułu, a następnie finalizator zamyka połączenie.
 - Zakres `session` jest wykorzystywany, jeśli chcemy uruchomić `fixture` w pierwszym teście a następnie
-uruchomić finalizator po uruchomieniu ostatniego testu. Jeśli zakres ustawimy na `session` a `autouse=True`,
-to nasz `fixture` zostanie uruchomiony tylko na początku sesji.
+  uruchomić finalizator po uruchomieniu ostatniego testu. Jeśli zakres ustawimy na `session` a `autouse=True`,
+  to nasz `fixture` zostanie uruchomiony tylko na początku sesji.
 
 
 Używanie informacji o fixture w testach
@@ -479,12 +480,12 @@ wiele `fixture`. Poniższy przykład pokazuje jak to zrobić.
 
 
     def test_password_verifier_works(password):
-        """Test that the password is verifyied correctly"""
-        (input, result) = password
+        """Test that the password is verified correctly"""
+        (text, result) = password
         print '\n'
-        print input
+        print text
 
-        assert check_password(input) == result
+        assert check_password(text) == result
 
 Mimo iż uruchomiliśmy tylko jeden test (`test_password_verifier_works`),
 w sumie został on uruchomiony trzy krotnie, każdy z innymi wartościami.
@@ -524,7 +525,7 @@ skip
 
 Powyżej przeprowadziliśmy dwa testy, jeden został pominięty (ponieważ nie został
 uruchomiony w systemie windows), a drugi był nieudany, ponieważ wiedzieliśmy,
-że to nie zadziała. Przyjżyjmy sie najpierw pomijaniu testów.
+że to nie zadziała. Przyjrzyjmy się najpierw pomijaniu testów.
 
 Podczas pomijania testów, podajemy warunek który musi zostać spełniony. Jeśli
 warunek nie zostanie spełniony, test nie zostanie uruchomiony oraz zostanie
@@ -559,7 +560,7 @@ xfail
 ^^^^^
 
 Wykorzystując `xfail` również możemy skorzystać z podobnych warunków jakie
-występują w funckji `skip`.
+występują w dekoratorze `skip`.
 
 .. code-block:: python
 
@@ -573,7 +574,7 @@ występują w funckji `skip`.
         assert 0
 
 Poniżej znajduje się kila przykładów pokazujących w jaki sposób można wykorzystać
-funckję `xfail`.
+funkcję `xfail`.
 
 .. code-block:: python
 
@@ -610,7 +611,7 @@ funckję `xfail`.
 
 Określając `run=False` test nie zostanie uruchomiony. Możemy również użyć
 wyrażenia tekstowego jako testu, aby sprawdzić, czy test nie powiedzie się.
-Możemy również w samym teście wywołać funkcjię `pytest.xfail("reason")`, która
+Możemy również w samym teście wywołać funkcję `pytest.xfail("reason")`, która
 spowoduje, że się nie powiedzie.
 
 Korzystając z `xfail` i `skip`, możesz podać powód dlaczego test się nie powiedzie
@@ -635,14 +636,14 @@ skorzystać z parametryzacji jednego przypadku testowego.
 
     import pytest
 
-    @pytest.mark.parametrize('input, expected', [
+    @pytest.mark.parametrize('expression, expected', [
         ('2 + 3', 5),
         ('6 - 4', 2),
         pytest.mark.xfail(('5 + 2', 8))
     ])
-    def test_equations(input, expected):
+    def test_equations(expression, expected):
         """Test that equation works"""
-        assert eval(input) == expected
+        assert eval(expression) == expected
 
 
 Ustawienia xUnit - konfiguracja i odłogowanie
@@ -650,7 +651,7 @@ Ustawienia xUnit - konfiguracja i odłogowanie
 
 Testując w stylu XUnit zawsze wykonujemy ustawienie (`setting up`) oraz
 czyszczenie (`tearing down`) przypadków testowych. Pytest również obsługuje
-ten styl pisania testowów.
+ten styl pisania testów.
 
 .. code-block:: python
 
@@ -716,10 +717,10 @@ Przykład pisania kodu
 
 .. code-block:: python
 
-    class TestCals:
+    class TestCalc:
 
         def test_add_method(self):
-            calc = Cals()
+            calc = Calc()
             assert calc.add(1, 1) == 2
             assert calc.add(0, 3) == 3
 
@@ -731,7 +732,7 @@ Przykład pisania kodu
         c = Calc()
         return c
 
-    class TestCals:
+    class TestCalc:
 
         def test_add_method(self, calc):
             assert calc.add(1, 1) == 2
@@ -745,14 +746,14 @@ Przykład pisania kodu
         c = Calc()
         return c
 
-    class TestCals:
+    class TestCalc:
 
         @pytest.mark.parametrize('a, b, exp', [
             (1, 1, 2), (0, 3, 3)
         ])
         def test_add_method(self, calc, a, b, exp):
-            assert calc.add(1, 1) == 2
-            assert calc.add(0, 3) == 3
+            assert calc.add(a, b) == exp
+            assert calc.add(a, b) == exp
 
 
 .. code-block:: python
@@ -762,14 +763,14 @@ Przykład pisania kodu
         c = Calc()
         return c
 
-    class TestCals:
+    class TestCalc:
 
         @pytest.mark.parametrize('a, b, exp', [
             (1, 1, 2), (0, 3, 3)
         ])
         def test_add_method(self, calc, a, b, exp):
-            assert calc.add(1, 1) == 2
-            assert calc.add(0, 3) == 3
+            assert calc.add(a, b) == exp
+            assert calc.add(a, b) == exp
 
         # pytest-quickcheck
         @pytest.mark.randomize(a=int, ncalls=4)
@@ -788,14 +789,14 @@ Przykład pisania kodu
         return c
 
     @local
-    class TestCals:
+    class TestCalc:
 
         @pytest.mark.parametrize('a, b, exp', [
             (1, 1, 2), (0, 3, 3)
         ])
         def test_add_method(self, calc, a, b, exp):
-            assert calc.add(1, 1) == 2
-            assert calc.add(0, 3) == 3
+            assert calc.add(a, b) == exp
+            assert calc.add(a, b) == exp
 
         # pytest-quickcheck
         @pytest.mark.randomize(a=int, ncalls=4)
@@ -831,14 +832,14 @@ Przykład pisania kodu
         return api_cal
 
     @local
-    class TestCals:
+    class TestCalc:
 
         @pytest.mark.parametrize('a, b, exp', [
             (1, 1, 2), (0, 3, 3)
         ])
         def test_add_method(self, calc, a, b, exp):
-            assert calc.add(1, 1) == 2
-            assert calc.add(0, 3) == 3
+            assert calc.add(a, b) == exp
+            assert calc.add(a, b) == exp
 
         # pytest-quickcheck
         @pytest.mark.randomize(a=int, ncalls=4)
@@ -862,7 +863,7 @@ Przykład pisania kodu
     ...
 
     @mode('local')
-    class TestCals:
+    class TestCalc:
         ...
 
     @mode('api')
@@ -885,7 +886,7 @@ Przykład pisania kodu
 
     @pytest.fixture(scope='session')
     def calc(request):
-        mode = request.config.getoption('-R)
+        mode = request.config.getoption('-R')
         if mode == 'local':
             return local_calc(request)
         elif mode == 'api':
@@ -894,7 +895,7 @@ Przykład pisania kodu
             raise Exception('local or api allowed')
 
     @mode('local')
-    class TestCals:
+    class TestCalc:
         def test_add(self, calc):
             ...
 
