@@ -61,7 +61,7 @@ Poniżej zamieszczona jest przykładowa konfiguracja:
     norecursedirs = .git .cache tmp*
 
 
-Więcej szczegółów dotyczących konfiguracji można znaleźć w `Konfiguracji pytest`_ lub w dokumentacji
+Więcej szczegółów dotyczących konfiguracji można znaleźć w `Konfiguracji pytest` lub w dokumentacji
 do poszczególnych pluginów. Przykładowa powyższa konfiguracja zawiera nagłówek ``[pytest]``,
 oraz trzy ustawienia:
 
@@ -481,11 +481,11 @@ wiele `fixture`. Poniższy przykład pokazuje jak to zrobić.
 
     def test_password_verifier_works(password):
         """Test that the password is verified correctly"""
-        (input_, result) = password
+        (text, result) = password
         print '\n'
-        print input_
+        print text
 
-        assert check_password(input_) == result
+        assert check_password(text) == result
 
 Mimo iż uruchomiliśmy tylko jeden test (`test_password_verifier_works`),
 w sumie został on uruchomiony trzy krotnie, każdy z innymi wartościami.
@@ -636,14 +636,14 @@ skorzystać z parametryzacji jednego przypadku testowego.
 
     import pytest
 
-    @pytest.mark.parametrize('input_, expected', [
+    @pytest.mark.parametrize('expression, expected', [
         ('2 + 3', 5),
         ('6 - 4', 2),
         pytest.mark.xfail(('5 + 2', 8))
     ])
-    def test_equations(input_, expected):
+    def test_equations(expression, expected):
         """Test that equation works"""
-        assert eval(input_) == expected
+        assert eval(expression) == expected
 
 
 Ustawienia xUnit - konfiguracja i odłogowanie
