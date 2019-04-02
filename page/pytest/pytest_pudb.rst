@@ -2,9 +2,9 @@
 Pytest Pudb
 ===========
 
-``pytest-pudb`` jest to wtyczka do ``pytest``, która ułatwia wruchomienie debagera ``pudb``
-podczas testowania. Podczas uruchamiania debugera należy wyłączyć przechwytywanie konsoli
-wykorzystaując flagę ``-s`` lub ``--capture=no``. Więcej informacji można uzyskać korzystając
+``pytest-pudb`` jest to wtyczka do ``pytest``, która ułatwia uruchomienie debuggera ``pudb``
+podczas testowania. Podczas uruchamiania debuggera należy wyłączyć przechwytywanie konsoli
+wykorzystując flagę ``-s`` lub ``--capture=no``. Więcej informacji można uzyskać korzystając
 z dokumentacji pudb_.
 
 

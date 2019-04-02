@@ -23,7 +23,7 @@ jego przetestowania wykorzystać `factory-boy` wraz z metodą `clean_fields()`.
 
 Wywołując metodę `clean_fields` sprawdzimy czy pola modelu zawierają wszystkie
 zdefiniowane i wymagane parametry (na. max_length dla CharField). Sprawdzimy
-również wszystkie walidatory, które zostały dodane do poszczególnych pól.
+również wszystkie validatory, które zostały dodane do poszczególnych pól.
 
 Można sprawdzić zapisując obiekt do bazy danych:
 
@@ -63,7 +63,7 @@ Testujemy również wszystkie utworzone metody.
             venue = open_errors_factory(name='Wembley Arena')
             assert only_venue.__str__() == 'Wembley Arena'  # or str(only_venue)
 
-Jeżeli wykorzystujemy nadpisane metody np. `save()` varto również przetestować
+Jeżeli wykorzystujemy nadpisane metody np. `save()` warto również przetestować
 je oddzielnie.
 
 .. code-block:: python

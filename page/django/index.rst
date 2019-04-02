@@ -58,8 +58,8 @@ W jaki sposób najlepiej pisać testy?
 
 Pytanie nie jest banalne i na początku sprawiało mi to dużo trudności. Pierwszym problemem był brak wiedzy w jaki sposób
 skonfigurować środowisko z Django pozwalające na uruchomienie testów. Kolejny problem, to bardzo często złożoność modeli,
-w jaki sposób tworzyć do nich obiekty? Inne problemy z którymi się borykałem, to: sprawdzenie czu url działają poprawnie,
-sprawdzenie czy utworzone tagi do szablonów sa poprawne, sprawdzenie czy formularze działają poprawnie. Najtrudniejsze było
+w jaki sposób tworzyć do nich obiekty? Inne problemy z którymi się borykałem, to: sprawdzenie czy url działają poprawnie,
+sprawdzenie czy utworzone tagi do szablonów są poprawne, sprawdzenie czy formularze działają poprawnie. Najtrudniejsze było
 jednak testowanie widoków w sposób pozwalający na przetestowanie tylko części funkcjonalności a nie całości.
 
 Zbierając jednak całą tę wiedzę, dalej miałem problemy z tym, w jaki sposób dobrze poukładać testy. Jak w tym wszystkim

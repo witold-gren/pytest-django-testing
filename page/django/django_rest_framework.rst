@@ -2,14 +2,14 @@
 Testowanie w Django REST framework
 ==================================
 
-Aby przetestować działanie naszego API najprościej jest wykorzystać testu
+Aby przetestować działanie naszego API najprościej jest wykorzystać testy
 funkcjonalne. Jednak warto również przetestować działanie naszych serializatorów
-(jeśli posiadają nie standardową logikę) lub poszczególnych metody wykorzystywanych
+(jeśli posiadają niestandardową logikę) lub poszczególnych metody wykorzystywanych
 w klasach `APIView` lub `ViewSet`.
 
 
 Sprawdzamy czy jest zwracana poprawna odpowiedź poprzez klienta, są to testy
-funkcjonalne wykorzystujące klienta WebTest.
+funkcjonalne wykorzystujące klienta `WebTest`.
 
 .. code-block:: python
 
@@ -35,7 +35,7 @@ funkcjonalne wykorzystujące klienta WebTest.
             self.assertEqual(product.name, 'Samsung Watch')
 
 
-Testowanie widoków poprzez APIRequestFactory
+Testowanie widoków poprzez ``APIRequestFactory``
 --------------------------------------------
 
 Możemy również napisać testy, tylko i wyłącznie dla konkretnego widoku z pominięciem
@@ -179,7 +179,7 @@ Przykłady ViewSet dla wybranych akcji
 Testowanie serializatora
 ------------------------
 
-Testując widok sprawdzamy czy zwrócowna wartość wykorzystuje konkretny serializator.
+Testując widok sprawdzamy czy zwrócona wartość wykorzystuje konkretny serializator.
 Nie sprawdzamy jednak samego działania serializatora, nie wiemy czy dodaliśmy do niego
 nowe pola, czy może nie zmieniliśmy akcji utworzenia nowego obiektu. Jeśli nasz
 serializator posiada co najmniej jedną rzecz, która powoduje, że mamy jakieś
@@ -256,9 +256,9 @@ W każdej chwili tworzą test, będziemy mogli je podmienić.
 
 
 Używam zbioru pól aby upewnić się, że dane wyjściowe z serializera mają
-dokładnie te pola, którychy oczekujemy. Używanie zbioru do tej weryfikacji jest
+dokładnie te pola, których oczekujemy. Używanie zbioru do tej weryfikacji jest
 bardzo ważne, ponieważ gwarantuje, że dodanie lub usunięcie dowolnego pola
-do serializera zostanie zauważone podczas wykonywania testów.
+do serializatora zostanie zauważone podczas wykonywania testów.
 
 .. code-block:: python
 
@@ -324,5 +324,5 @@ testowanie przypadków brzegowych które określiliśmy.
 Do przygotowania
 ----------------
 
-- Testowanie walidatorów oraz walidacji pól
+- Testowanie validatorów oraz walidacji pól
 - Testowanie własnych pól

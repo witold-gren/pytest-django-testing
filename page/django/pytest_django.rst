@@ -19,7 +19,7 @@ Konfiguracja
 ------------
 
 W katalogu głównym naszej aplikacji w pliku ``pytest.ini`` dodajemy zmienną
-``DJANGO_SETTINGS_MODULE`` w której ustawiamy śieżkę do ustawień django.
+``DJANGO_SETTINGS_MODULE`` w której ustawiamy ścieżkę do ustawień Django.
 
 .. code-block:: bash
 
@@ -35,7 +35,7 @@ Uruchomienie testów
 
 Testy uruchamiamy w taki sam sposób jak testy w ``pytest``. Mamy natomiast możliwość
 uruchomienia ``manage.py test`` a w tle uruchamiamy ``pytest``. Aby tego dokonać tworzymy
-plik ``runner.py`` i w środku zamiszczamy poniższy kod:
+plik ``runner.py`` i w środku zamieszczamy poniższy kod:
 
 .. code-block:: python
 
@@ -76,7 +76,7 @@ Następnie należy ustawić zmienną ``TEST_RUNNER`` w pliku ``settings.py``.
     TEST_RUNNER = 'my_project.runner.PytestTestRunner'
 
 
-Teraz możemy uruchomić nasze testy w podobny sposób w jaki urucamia się je normalnie w django.
+Teraz możemy uruchomić nasze testy w podobny sposób w jaki uruchamia się je normalnie w Django.
 
 .. code-block:: bash
 
@@ -92,7 +92,7 @@ Teraz możemy uruchomić nasze testy w podobny sposób w jaki urucamia się je n
 Dodatkowe komendy
 ^^^^^^^^^^^^^^^^^
 
-Uruchamiająć nasze testy mamy możliwość utworzenia dodatkowych komend.
+Uruchamiając nasze testy mamy możliwość utworzenia dodatkowych komend.
 
 ``--fail-on-template-vars`` dzięki której zostanie podniesiony wyjątek dla niepoprawnych zmiennych w szablonach django.
 
@@ -107,15 +107,15 @@ Opcja ta nie będzie przechwytywać zmian schematu między testami. Można tę o
 
 ``--migrations`` - wymusi utworzenie bazy wraz z migracjami
 
-Więcej szczegółów na temat konfiguracji i pracy z bazą danych można znalść pod adresem
+Więcej szczegółów na temat konfiguracji i pracy z bazą danych można znaleźć pod adresem
 http://pytest-django.readthedocs.io/en/latest/database.html
 
 
 Markery
 -------
 
-pytest-django zapewnia kilka bardzo przydatnych markerów które można wykorzyastać podczas pisania testów.
-Wszystkie poniższe znaczniki można wykorzystać na funkcji lub klasie testujacej.
+pytest-django zapewnia kilka bardzo przydatnych markerów które można wykorzystać podczas pisania testów.
+Wszystkie poniższe znaczniki można wykorzystać na funkcji lub klasie testującej.
 
 @pytest.mark.django_db(transaction=False)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -204,8 +204,8 @@ przetestować konkretną zmienną lub metodę w klasie widoku.
 client
 ^^^^^^
 
-``client`` jest instancją ``django.test.Client``. Można go wykorzystwać do pisania testów
-integracyjnych jedna jest on nie polecany. Zamiast niego lepiej jest skorzystać z modułu ``WebTest``,
+``client`` jest instancją ``django.test.Client``. Można go wykorzystywać do pisania testów
+integracyjnych jednak nie jest on polecany. Zamiast niego lepiej jest skorzystać z modułu ``WebTest``,
 który również został opisany.
 
 .. code-block:: python
@@ -237,7 +237,7 @@ Jego nazwa to ``admin`` a hasło ``password``.
 django_user_model
 ^^^^^^^^^^^^^^^^^
 
-``django_user_model`` jest modelem (nie instakcją) użytkownika ustawionego poprzez settings.AUTH_USER_MODEL.
+``django_user_model`` jest modelem (nie instancją) użytkownika ustawionego poprzez settings.AUTH_USER_MODEL.
 
 .. code-block:: python
 
@@ -268,8 +268,8 @@ live_server
 ^^^^^^^^^^^
 
 Ten fixture uruchamia aplikację django w oddzielnym wątku. Dostęp do adresu url można uzyskać
-poprzez komendę ``live_server.url``. Ten fixture będzie przydatny w przypadku kiedy będzimy
-chcieli uruchomić testy poprz wykorzystanie biblioteki ``selenium``.
+poprzez komendę ``live_server.url``. Ten fixture będzie przydatny w przypadku kiedy będziemy
+chcieli uruchomić testy poprzez wykorzystanie biblioteki ``selenium``.
 
 
 settings
@@ -324,7 +324,7 @@ Metoda setUp znana z UnitTest
 
 Niestety największym dotąd nie rozwiązanym problemem jest brak możliwości tworzenia
 obiektów w bazie danych z wykorzystaniem metody `setup_class` a znanej z biblioteki
-UnitTest pod nazwą `setUpClass`.
+``unittest`` pod nazwą `setUpClass`.
 
 `setUpClass()` ==> `setup_class`
 `tearDownClass()` ==> `teardown_class`

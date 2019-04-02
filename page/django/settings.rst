@@ -64,7 +64,7 @@ Warto więc zmienić go na silnik ``SQLite``:
 
     Jeśli wykorzystujemy specyficzne rozwiązania z silnika bazy danych z której korzystamy,
     możemy tagować nasze testy markerami, zapewni nam to możliwość uruchomienia testów
-    specyficznych dla danej bazy danych oraz do szybkie testowanie zapytań napisanych
+    specyficznych dla danej bazy danych oraz do szybkiego testowanie zapytań napisanych
     w Django ORM.
 
 
@@ -158,7 +158,7 @@ Wyłącz informacje o logach
 --------------------------
 
 Jest to znacząca modyfikacja tylko wtedy, gdy mamy ogromną ilość logowań i/lub dodatkowej
-logiki związanej z logami (np. inspekcje obiektów, ciężkie manipulacje ciągami itd.).
+logiki związanej z logami (np. inspekcję obiektów, ciężkie manipulacje ciągami itd.).
 Logowanie również jest niepotrzebne podczas wykonywania testów, dlatego nie ma potrzeby
 dodawania dodatkowego narzutu pliku I/O do pakietu testowego.
 
@@ -173,7 +173,7 @@ Użyj szybszego zaplecza e-mail
 
 Domyślnie Django używa ``django.core.mail.backends.locmem.EmailBackend``, który jest
 backendem przeznaczonym do testowania w pamięci, jednak czasem mogą z nim wystąpić problemy
-z powodu sprawdzanie nagłówków. Warto więc skorzystąć z alternatywnego backendu mailowego.
+z powodu sprawdzanie nagłówków. Warto więc skorzystać z alternatywnego backendu mailowego.
 
 .. code-block:: python
 
@@ -197,14 +197,14 @@ Mock, mock, mock!
 
 Wykorzystując ``Mock`` możesz znacznie skrócić czas testowania swoich aplikacji.
 Obiekty Mock można używać podczas każdych testów, najeży jednak pamiętać aby nie tworzyć
-mocków do bazy danych jeśli nie posiadamy testów integracyjnych. Więcej szczegułów
+mocków do bazy danych jeśli nie posiadamy testów integracyjnych. Więcej szczegółów
 na temat tworzenia ``Mock`` znajdziesz w module ``pytest-mock``.
 
 
 Dodatkowe opcje
 ---------------
 
-Domyślne ustawienie lokalizacj dla Faker
+Domyślne ustawienie lokalizacji dla Faker
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: python

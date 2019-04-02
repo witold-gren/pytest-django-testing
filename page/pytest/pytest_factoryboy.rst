@@ -2,7 +2,7 @@
 Pytest FactoryBoy
 =================
 
-`Factory Boy`_ jest narzędziem tworzącym fabryki dla obiektów, co oznacza, że nie musimy ręcznie
+`Factory Boy` jest narzędziem tworzącym fabryki dla obiektów, co oznacza, że nie musimy ręcznie
 tworzyć potrzebnych obiektów do testów, ale możemy je wygenerować od razu w podanej ilości
 w bardzo prosty sposób. Możemy ustawiać na tworzonych obiektach własne wartości tylko dla
 zmiennych które chcemy przetestować.
@@ -37,6 +37,7 @@ modelu budujemy fabrykę.
 .. code-block:: python
 
     import factory
+
     from . import models
 
     class UserFactory(factory.Factory):
@@ -57,7 +58,7 @@ modelu budujemy fabrykę.
             model = 'user.User'
 
 
-Nową fabryję możemy utworzyć na 3 sposoby:
+Nową fabrykę możemy utworzyć na 3 sposoby:
 
 .. code-block:: python
 
@@ -108,7 +109,7 @@ Jako dodatkowy argument możemy podać język w jakim ma zostać utworzony atryb
 
         username = factory.Faker('name', locale='pl_PL')
 
-Z modułu ``faker.providers.lorem`` wybierając funckję ``paragraph`` możemy jako argument
+Z modułu ``faker.providers.lorem`` wybierając funkcję ``paragraph`` możemy jako argument
 przekazać dodatkowe parametry.
 
 .. code-block:: python
@@ -180,7 +181,7 @@ mieć inną wartość dla tego pola. Aby osiągnąć taki efekt wykorzystujemy d
 
         username = factory.Sequence(lambda n: 'user%d' % n)
 
-Jeśli jes ona bardziej skomplikowana można ją również zapisać w poniższy sposób.
+Jeśli jest ona bardziej skomplikowana można ją również zapisać w poniższy sposób.
 
 .. code-block:: python
 
@@ -262,7 +263,7 @@ LazyAttribute
 ^^^^^^^^^^^^^
 
 Gdy mamy sytuację w której nasze pole jest zależne od innych najlepiej wykorzystać LazyAttribute.
-Dobrym przykładem może być generowanie adresu e-mail w oparciu o nazwię użytkownika.
+Dobrym przykładem może być generowanie adresu e-mail w oparciu o nazwę użytkownika.
 
 .. code-block:: python
 
@@ -304,7 +305,7 @@ Jeśli posiadamy bardziej rozbudowaną logikę możemy wykorzystać dekorator
 FileField
 ^^^^^^^^^
 
-Specialnie dla modelu Django został przygotowany atrybut ``factory.django.FileField``.
+Specjalnie dla modelu Django został przygotowany atrybut ``factory.django.FileField``.
 Pozwala on na utworzenie pliku dla generowanej fabryki.
 
 .. code-block:: python
@@ -371,7 +372,7 @@ Parametry
 ^^^^^^^^^
 
 Jeśli tworzone pole jest zależne od atrybutu nie będącego polem w rzeczywistym modelu
-tworzonym przez fabrykę należy wykorzystać deklarację Paramtru.
+tworzonym przez fabrykę należy wykorzystać deklarację Parametru.
 
 .. code-block:: python
 
@@ -437,9 +438,9 @@ Deklarowanie fabryk
 ^^^^^^^^^^^^^^^^^^^
 
 Deklaracja przebiega w dokładnie taki sam sposób jak tworzenie fabryki z prostej klasy.
-Dziedzicząc jednak z DjangoModelFactory otzymujemy do ustawień 2 dodatkowe paramtery.
-``django_get_or_create`` oraz ``database``. Pierwszy z nich pokreśla w jaki sposób mają
-zostać tworzone obiekty a drugi określa jakie bazy danych chcemu używać.
+Dziedzicząc jednak z DjangoModelFactory otrzymujemy do ustawień 2 dodatkowe parametry.
+``django_get_or_create`` oraz ``database``. Pierwszy z nich określa w jaki sposób mają
+zostać tworzone obiekty a drugi określa jakie bazy danych chcemy używać.
 
 .. code-block:: python
 
@@ -497,7 +498,7 @@ Dziedziczenie fabryk
 ^^^^^^^^^^^^^^^^^^^^
 
 Po zdefiniowaniu "bazowej" fabryki dla danej klasy, alternatywne wersje mogą być łatwo zdefiniowane poprzez podklasę.
-Podklasowana Fabryka dziedziczy wszystkie deklaracje od rodzica i aktualizuje je własnymi deklaracjami.
+Nadrzędna Fabryka dziedziczy wszystkie deklaracje od rodzica i aktualizuje je własnymi deklaracjami.
 
 .. code-block:: python
 
@@ -555,11 +556,12 @@ Jeśli atrybut jest złożonym polem (np. ForeignKey do innego modelu), należy 
 
 
 Jeśli wartości klucza ForeignKey muszą zostać wybrane z już wypełnionej tabeli
-(np. ``django.contrib.contenttypes.models.ContentType``), należy użyć ``fabryki.Iterator``.
+(np. ``django.contrib.contenttypes.models.ContentType``), należy użyć ``factory.Iterator``.
 
 .. code-block:: python
 
     import factory, factory.django
+
     from . import models
 
     class UserFactory(factory.django.DjangoModelFactory):
@@ -602,7 +604,7 @@ Pole ManyToMany
 ^^^^^^^^^^^^^^^
 
 Zbudowanie odpowiedniego połączenia między dwoma modelami zależy w dużej mierze od
-przypadku użycia. `factory_boy` niestety nie zapewnia narzędzia działającego w podobniy
+przypadku użycia. `factory_boy` niestety nie zapewnia narzędzia działającego w podobny
 sposób jak w przypadku `SubFactory` lub `RelatedFactory`, dlatego programista musi
 tworzyć własne zależności od modelu. Aby utworzyć relację M2M należy wykorzystać hook
 ``post_generation``.
@@ -677,7 +679,7 @@ deklaracja ``groups`` doda przekazane grupy do użytkownika.
         class Meta:
             model = 'clinics.Clinic'
 
-Innnym przykładem jest możliwość utworzenia deklaracji która będzie przyjmowała liczbę lub
+Innym przykładem jest możliwość utworzenia deklaracji która będzie przyjmowała liczbę lub
 obiekt iterowalny aby utworzyć obiekty powiązane. Nie podając żadnej wartości zostanie
 utworzony i dołączony 1 obiekt ``DomainFactory``.
 
@@ -685,7 +687,7 @@ utworzony i dołączony 1 obiekt ``DomainFactory``.
 Pole ManyToMany (through)
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Aby utworzyć relację Many2Many poprzez własną tabelę (throw) należy wykorzystać
+Aby utworzyć relację Many2Many poprzez własną tabelę (through) należy wykorzystać
 deklarację ``RelatedFactory``.
 
 .. code-block:: python

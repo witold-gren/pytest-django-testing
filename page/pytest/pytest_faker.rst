@@ -3,10 +3,10 @@ PyTest Faker
 ============
 
 ``Faker`` jest pakietem generującym fałszywe dane. Faker może się przydać aby utworzyć
-obiekty bazy danych, ładny dokument XML, dane potrzebne do testów czy anonimizacja danych
+obiekty bazy danych, ładny dokument XML, dane potrzebne do testów czy do anonimizacji danych
 pobranych z usługi produkcyjnej.
 
-``pytest-faker`` jest dodatkiem zapewniającym ndodatkowy fixture będący instancją obiektu faker.
+``pytest-faker`` jest dodatkiem zapewniającym dodatkowy fixture będący instancją obiektu faker.
 
 Instalacja
 ----------
@@ -19,10 +19,10 @@ Instalacja
 Wykorzystanie
 -------------
 
-Aby utworzyć dane należy utworzyć obiekt klasy Faker, a nas†epnie wywołać jedną z dostępnych
+Aby utworzyć dane należy utworzyć obiekt klasy Faker, a następnie wywołać jedną z dostępnych
 metod na tym obiekcie. Metod jest tak dużo że warto zerknąć do dokumentacji pod adresem
 http://faker.readthedocs.io/en/master/providers.html. W niej mamy utworzone grupy w których
-mamy wykorzystane konkretne metody. Najczęsciej używane grupy to ``faker.providers.person``,
+mamy wykorzystane konkretne metody. Najczęściej używane grupy to ``faker.providers.person``,
 ``faker.providers.address`` czy ``faker.providers.lorem``.
 
 
@@ -55,13 +55,14 @@ Aby wykorzystać moduł ``pytest-faker`` należy wykorzystać dostarczony fixtur
 Lokalizacja
 ^^^^^^^^^^^
 
-Aby ustawić jezyk w jakim mają zostac wygenerowane dane należy w inicjalizacji
-obiektu Faker podać dodatkowy argument będący kodem języku. Język polski jest oznaczony
+Aby ustawić język w jakim mają zostać wygenerowane dane należy podczas inicjalizacji
+obiektu Faker podać dodatkowy argument będący kodem języka. Język polski jest oznaczony
 kodem ``pl_PL``.
 
 .. code-block:: python
 
     from faker import Faker
+
     fake = Faker('it_IT')
 
     for _ in range(10):
@@ -79,7 +80,7 @@ kodem ``pl_PL``.
     > Max Coppola
 
 Aby ustawić lokalizację dla modułu ``pytest-faker`` należy w pliku ``conftest.py``
-nadpisać domyślny fixture ``faker_locale``, który powinien zwracać wartość języka.
+nadpisać domyślny fixture ``faker_locale``, który powinien zwracać kod języka.
 
 
 .. code-block:: python
@@ -98,6 +99,7 @@ Właściwość .random na generatorze zwraca instancję ``random.Random`` używa
 .. code-block:: python
 
     from faker import Faker
+
     fake = Faker()
 
     fake.random
@@ -120,10 +122,11 @@ wersji fakera z taką samą wartością `seed` zwróci nam takie same wyniki.
 .. code-block:: python
 
     from faker import Faker
+
     fake = Faker()
     fake.seed(4321)
 
     print(fake.name())
     > Margaret Boehm
 
-Więcej szczegułów można znaleźć w dokumentacji http://faker.readthedocs.io/en/master/index.html#seeding-the-generator
+Więcej szczegółów można znaleźć w dokumentacji http://faker.readthedocs.io/en/master/index.html#seeding-the-generator

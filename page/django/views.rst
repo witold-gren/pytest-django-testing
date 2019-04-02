@@ -11,14 +11,14 @@ Zadania widoku:
 
 W widokach nie powinieneś:
 
-* sprawdzanie poprawności danych - za to jest odpowiedzialność formularz
-* zapisywać danych - to jest odpowiezialność formularza
-* budowanie złożonych zapytań - to jest odpowiedzialność menedżera
+* sprawdzać poprawność danych - za to jest odpowiedzialność formularz
+* zapisywać danych - to jest odpowiedzialność formularza
+* budować złożonych zapytań - to jest odpowiedzialność menedżera
 
 
 Jak testować:
 
-* Testując widoki wykorzystuj RequestFactory
+* Testując widoki wykorzystuj ``RequestFactory``
 * jeśli możesz wykonuj bezpośrednie wywołanie widoku
 * Konfiguruj zależności w sposób jawny (np. request.user, request.session)
 

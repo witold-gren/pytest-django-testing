@@ -58,7 +58,7 @@ lub argumenty słów kluczowych
         benchmark(time.sleep, duration=0.02)
 
 
-Jeśli potrzebujemy dokładnej kontrolia nad przebiegiem testu (np. funkcja konfiguracji czy dokładna kontrola iteracji i przebiegu)
+Jeśli potrzebujemy dokładnej kontroli nad przebiegiem testu (np. funkcja konfiguracji czy dokładna kontrola iteracji i przebiegu)
 istnieje specjalny tryb `pedantyczny` pozwalający na dokładne określenie parametrów uruchamianego testu.
 
 .. code-block:: python
@@ -70,7 +70,7 @@ istnieje specjalny tryb `pedantyczny` pozwalający na dokładne określenie para
 Dodatkowe opcje podczas uruchamiania
 ------------------------------------
 
-Benchmark zawiera szerek dodatkowych opcji ustawianych podczas uruchamiania testu. Więcej
+Benchmark zawiera szereg dodatkowych opcji ustawianych podczas uruchamiania testu. Więcej
 na ich temat możemy znaleźć w dokumentacji modułu http://pytest-benchmark.readthedocs.io/en/stable/usage.html#commandline-options.
 
 Marker

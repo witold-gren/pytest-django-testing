@@ -46,7 +46,7 @@ Drugi szablon, przedstawia wykonanie tego samego testu poprzez `WebTest`.
     form["steps-INITIAL_FORMS"] = 1
     form["steps-MAX_NUM_FORMS"] = 3
     form["steps-0-step"] = step.step
-    form["steps-0-expected] = step.expected
+    form["steps-0-expected"] = step.expected
     form["steps-1-step"] = "Click link."
     form["steps-1-expected"] = "Account active."
     form["status"] = case.status
@@ -121,7 +121,7 @@ można skorzystać w taki sam sposób jak z klienta django. Atrybuty te zawieraj
 oraz kontekst używany do renderowania tych szablonów.
 
 Sesja jest dostępna pod ``django_app.session``. Domyślnie WebTest w każdym zapytaniu w formularzy automatycznie również
-wysyła zmienną ``CSRF``. Aby go wyłączyć należy skorzystać z fikstury ``django_app_factory`` i przekazać parametr ``csrf_checks=False``.
+wysyła zmienną ``CSRF``. Aby go wyłączyć należy skorzystać z fixtury ``django_app_factory`` i przekazać parametr ``csrf_checks=False``.
 
 
 Zmienne z Django Client
@@ -194,7 +194,7 @@ Django Rest Framework
 ---------------------
 
 Aby skorzystać z WebTest wraz z ``django rest framework`` należy utworzyć własną
-implementację autoryzacji użytkownika. Dzięku temu, podając w zapytaniu ``user=str(user.username)``
+implementację autoryzacji użytkownika. Dzięki temu, podając w zapytaniu ``user=str(user.username)``
 użytkownik zostanie poprawnie zalogowany bez zbędnych dodatkowo wykonywanych metod.
 
 Najpierw musimy przygotować moduł autoryzacyjny. Należy utworzyć plik ``webtest.py``

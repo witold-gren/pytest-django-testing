@@ -3,12 +3,12 @@ Pytest Mock
 ===========
 
 Pytest-mock jest pluginem ułatwiającym tworzenie mocków w testach. Nie musimy importować
-modułu Mock, patch i innych, są one dostępne bespośrednio jako fixture. Jednak aby zacząć
-z niego korzystać musimy zrozumieć czym jest Mock oraz w jaki wposób działa. Pytest-mock
-nie robi żadnej magi wokoło modułu mocków, jednak jeśli nie rozumiemy jak działa obiekt
-Mock będziemy mieli problem z zrozumieniem w jaki sposób z niego korzytać.
+modułu ``Mock``, patch i innych, są one dostępne bezpośrednio jako fixture. Jednak aby zacząć
+z niego korzystać musimy zrozumieć czym jest ``Mock`` oraz w jaki sposób działa. Pytest-mock
+nie robi żadnej magii wokół modułu mock, jednak jeśli nie rozumiemy jak działa obiekt
+``Mock`` będziemy mieli problem ze zrozumieniem w jaki sposób z niego korzystać.
 
-Czym jest mokowanie? Jesy to symulowaniem działania obiektu. Mokowanie obiektów jest
+Czym jest mockowanie? Jest to symulowaniem działania obiektu. Mockowanie obiektów jest
 bardzo dobrym narzędziem. Jednak należy uważać z jego nadużywaniem. Dobrym miejscem do
 ich wykorzystania są:
 
@@ -22,7 +22,7 @@ ich wykorzystania są:
 .. danger::
 
     Złym miejscem wykonywania mocków jest symulowanie działania bazy danych bez utworzenia
-    testów integracyjnych. Również nie powinno sie dokonywać mokowania bazy danych podczas
+    testów integracyjnych. Również nie powinno sie dokonywać mockowania bazy danych podczas
     wykonywania samych testów integracyjnych. W Django poprzez test integracyjny rozumiemy
     korzystanie z narzędzia ``WebTest``, ``Selenium`` czy ``Django Client``.
 
@@ -38,6 +38,7 @@ Przykład rozwiązania, które może spowodować problemy podczas testowania apl
         def save_base(self, *args, **kwargs):
             assert NotImplementedError('call save_base')
 
+
     class DjangoFakeForm:
         def __init__(self, instance=None, data=None):
             self.instance = instance
@@ -52,6 +53,7 @@ Przykład rozwiązania, które może spowodować problemy podczas testowania apl
             self.instance.save_base()
             return self.instance
 
+
     def test_solution1(mocker):
         mock_save = mocker.object(DjangoFakeModel, 'save_base')
         form = DjangoFakeForm(instance=DjangoFakeModel(), data={'age': 3})
@@ -63,21 +65,21 @@ Przykład rozwiązania, które może spowodować problemy podczas testowania apl
         mock_save.assert_called_once()   # <- a raczej powinno być assert_called_once_with
 
 
-Problem z tworzeniem mocka polega na tym, że bardzo łatwo można przez pomyłkę wywołać funckję,
+Problem z tworzeniem mocka polega na tym, że bardzo łatwo można przez pomyłkę wywołać funkcję,
 która będzie bardzo podobna do oryginalnej a jednak nie zwróci ona błędu. Przykładem może być
-``mock_save.assart_called_once()``. Wykonanie powyższego testu będzie zawsze poprawne. Na szczęscie
-wywołanie na MagicMock metody która rozpoczyna się od ``assert_`` będzie również sprawdzona
+``mock_save.assart_called_once()``. Wykonanie powyższego testu będzie zawsze poprawne. Na szczęście
+wywołanie na ``MagicMock`` metody która rozpoczyna się od ``assert_`` będzie również sprawdzona
 poprawność wywołania, co zabezpiecza nas przed popełnieniem błędu.
 
 
-Jak działa Mock?
+Jak działa ``Mock``?
 ----------------
 
-Aby skorzystać z obiektu Mock należy go zaimportować. W python 2 importujemy go poprzez ``import mock``
-(wczesniej należy zainstalować bibliotekę ``pip install mock``) natomiast w pythonie 3
+Aby skorzystać z obiektu ``Mock`` należy go zaimportować. W python 2 importujemy go poprzez ``import mock``
+(wcześniej należy zainstalować bibliotekę ``pip install mock``) natomiast w python 3
 importujemy go z modułu unittest ``from unittest import mock``.
 
-Utworzenie Mock odbywa się poprzez utworzene obiektu klasy Mock. Obiekt ten posiada szczegulną
+Utworzenie ``Mock`` odbywa się poprzez utworzenie obiektu klasy ``Mock``. Obiekt ten posiada szczególną
 własność, potrafi w locie utworzyć atrybuty i metody które są mu potrzebne. Warto tworząc
 obiekt mock podać atrybut ``name``, dzięki temu będziemy wiedzieli jaki mock aktualnie
 jest uruchomiony.
@@ -88,7 +90,7 @@ jest uruchomiony.
     >>> m
     <Mock name='my_first_mock' id='4622279400'> # normalnie mamy wartość <Mock id='4622279400'>
 
-Obiekt Mock zawiera kilka specialnych metod i atrybutów.
+Obiekt ``Mock`` zawiera kilka specjalnych metod i atrybutów.
 
 .. code-block:: python
 
@@ -97,9 +99,9 @@ Obiekt Mock zawiera kilka specialnych metod i atrybutów.
      'attach_mock', 'call_args', 'call_args_list', 'call_count', 'called', 'configure_mock',
      'method_calls', 'mock_add_spec', 'mock_calls', 'reset_mock', 'return_value', 'side_effect']
 
-Próbując odczytać nie istniejący atrybut nie otrzymamy błedu `AttributeError`, otrzymujemy
-kolejny obiekt Mock. Nowy obiekt jest na stałe przypisany do wywołanego atrybutu.
-Kilkukrotne wywołanie tego samego atrybutu zawsze zwróci ten sam Mock.
+Próbując odczytać nie istniejący atrybut nie otrzymamy błędu `AttributeError`, otrzymujemy
+kolejny obiekt ``Mock``. Nowy obiekt jest na stałe przypisany do wywołanego atrybutu.
+Kilkukrotne wywołanie tego samego atrybutu zawsze zwróci ten sam ``Mock``.
 
 .. code-block:: python
 
@@ -111,7 +113,7 @@ Kilkukrotne wywołanie tego samego atrybutu zawsze zwróci ten sam Mock.
      'method_calls', 'mock_add_spec', 'mock_calls', 'reset_mock', 'return_value', 'side_effect',
      'some_attribute']
 
-Wywołanie nie istniejącej funkcji o takiej same nazwie jak atrybut zwróci inny obiekt Mock.
+Wywołanie nie istniejącej funkcji o takiej same nazwie jak atrybut zwróci inny obiekt ``Mock``.
 
 .. code-block:: python
 
@@ -121,13 +123,13 @@ Wywołanie nie istniejącej funkcji o takiej same nazwie jak atrybut zwróci inn
 Jak możesz zauważyć, takie obiekty są doskonałym narzędziem do naśladowania innych obiektów,
 ponieważ mogą ujawnić dowolny interfejs API bez zgłaszania wyjątków. Jednak aby je wykorzystać
 w testach, muszą one zachowywać się tak, jak oryginał, co oznacza że muszą zwracać
-rozsądne wartości lub wykonywanie operacje.
+rozsądne wartości lub wykonywać operacje.
 
 Atrybut ``spec``
 ^^^^^^^^^^^^^^^^
 
 Tworząc mock możemy podać atrybut ``spec``. Efektem jego działanie jest utworzenie
-obiektu Mock który będzie zawierał takie same metody, właściwości jak wskazany obiekt.
+obiektu ``Mock`` który będzie zawierał takie same metody, właściwości jak wskazany obiekt.
 Taki obiekt mock, nie może fałszować dodatkowych atrybutów, które nie znajdują się
 w klasie na podstawie której został zbudowany. Warto zwrócić uwagę na fakt, że mock
 stworzony na podstawie klasy, która implementuje atrybuty wewnątrz swoich funkcji np.
@@ -190,7 +192,7 @@ wywoływanego atrybutu lub metody.
     42
 
 Również tworząc nowy obiekt możemy podać parametr ``return_value``. Dzięki któremu,
-wywołanie danego mocka zpowoduje zwrócenie konkretnej wartości.
+wywołanie danego mocka spowoduje zwrócenie konkretnej wartości.
 
 .. code-block:: python
 
@@ -205,7 +207,7 @@ wywołanie danego mocka zpowoduje zwrócenie konkretnej wartości.
     Actual call: variable(2, 4)
 
 
-Należy pamiętać, że przypisująć do ``return_value`` konkretną funkcję zostanie zwrócony jej
+Należy pamiętać, że przypisując do ``return_value`` konkretną funkcję zostanie zwrócony jej
 obiekt a sama funkcja nie zostanie wywołana.
 
 .. code-block:: python
@@ -225,6 +227,7 @@ Atrybut ``side_effect``
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 Jest atrybutem który akceptuje trzy różne wartości obiektów:
+
 * obiekty wywoływalne (callable)
 * obiekty iterowalne (iterable)
 * wyjątki (exceptions)
@@ -291,7 +294,7 @@ również ustawić konkretną klasę, a wywołanie takiej metody spowoduje utwor
     4622375904
 
 Tworząc nowy mock również możemy ustawić wartość ``side_effect`` dzięki której wywołanie
-takiego moka spowoduje np. wyrzucenie wyjątku, lub przeliczenie konkretnej wartości.
+takiego mocka spowoduje np. wyrzucenie wyjątku, lub przeliczenie konkretnej wartości.
 
 .. code-block:: python
 
@@ -303,19 +306,19 @@ takiego moka spowoduje np. wyrzucenie wyjątku, lub przeliczenie konkretnej wart
     TypeError: <lambda>() takes 1 positional argument but 2 were given
 
 
-Mock vs MagicMock
+``Mock`` vs ``MagicMock``
 ^^^^^^^^^^^^^^^^^
-MagicMock jest podklasą klasy Mock.
+``MagicMock`` jest podklasą klasy ``Mock``.
 
 .. code-block:: python
 
     class MagicMock(MagicMixin, Mock)
 
-W rezultacie MagicMock zapewnia wszystko, co zapewnia Mock oraz jak można się spodziewać potrafi nieco więcej.
-Zamiast myśleć o Mocku jako o uboższej wersji MagicMocka, pomyśl o MagicMock jako rozszerzonej wersji Mock.
-To powinno odpowiedzieć na pytanie o to, dlaczego Mock istnieje i co zapewnia Mock a co MagicMock.
+W rezultacie ``MagicMock`` zapewnia wszystko, co zapewnia ``Mock`` oraz jak można się spodziewać potrafi nieco więcej.
+Zamiast myśleć o ``Mock`` jako o uboższej wersji ``MagicMocka``, pomyśl o ``MagicMock`` jako rozszerzonej wersji ``Mock``.
+To powinno odpowiedzieć na pytanie o to, dlaczego ``Mock`` istnieje i co zapewnia ``Mock`` a co ``MagicMock``.
 
-Jedną i najważniejszą różnicą jest fakt, że MagicMock zapewnia tworzenie "magicznych" metod
+Jedną i najważniejszą różnicą jest fakt, że ``MagicMock`` zapewnia tworzenie "magicznych" metod
 pythona jeśli są one potrzebne. Poprzez magiczne metody rozumiemy wszystkie metody interfejsu
 zawierające podwójne podkreślenie w swojej nazwie (np. ``__init__``, ``__len__`` itd.)
 
@@ -352,9 +355,9 @@ Możesz "zobaczyć" metody dodane do MagicMock, ponieważ metody te są wywoływ
     >>> dir(magic1)
     ['__int__', '__len__', 'assert_any_call', 'assert_called_once_with', ...]
 
-Dlaczego więc nie używać MagicMock przez cały czas? Postaram się postawić inne pytanie:
-Czy rzeczywiście potezebujemy domyślnych implementacjami metod magicznych?
-Przykład? Czy wywołanie indeksu na obieknie ``mocked_object[1]`` rzeczywiście powinno
+Dlaczego więc nie używać ``MagicMock`` przez cały czas? Postaram się postawić inne pytanie:
+Czy rzeczywiście potrzebujemy domyślnych implementacjami metod magicznych?
+Przykład? Czy wywołanie indeksu na obiekcie ``mocked_object[1]`` rzeczywiście powinno
 zwrócić wartość zamiast błędu? Czy możesz zaakceptować wszystkie niezamierzone
 konsekwencje z powodu zastosowania automatycznie utworzonych metod magicznych?
 Jeśli odpowiedź na te pytania brzmi "tak", możesz korzystać z ``MagicMock``.
@@ -370,7 +373,7 @@ W przeciwnym razie korzystaj z ``Mock``.
         external_obj.setup.assert_called_with(cache=True, max_connections=256)
 
 
-Specialne metody i atrybuty obiektu
+Specjalne metody i atrybuty obiektu
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * `called`_ — zwraca wartość ``True`` / ``False`` pokazując czy obiekt był wywołany
@@ -381,7 +384,7 @@ Specialne metody i atrybuty obiektu
 * `mock_calls`_ — zwraca zapis wywołań do symulowanego obiektu, jego metod, atrybutów i zwracanych wartości
 * `attach_mock`_ - pozwala dołączyć do obiektu nowy atrybut, metodę
 * `configure_mock`_ - pozwala skonfigurować wartości obiektu poprzez wykorzystanie słownika
-* `mock_add_spec`_ - pozwala na podstawie stringu lub obiektu ustawić wartości dla obiektu
+* `mock_add_spec`_ - pozwala na podstawie stringa lub obiektu ustawić wartości dla obiektu
 * `reset_mock`_ - resetuje wartości wywołania obiektu
 * `return_value`_ - zwraca jedną wartość niezależnie czy wywołamy ją jako zmienną czy metodę
 * `side_effect`_ - zwraca wywołanie funkcji, przekazanie list zwraca po każdym elemencie
@@ -400,10 +403,10 @@ Specialne metody i atrybuty obiektu
 .. _`side_effect`: https://docs.python.org/3/library/unittest.mock.html#unittest.mock.Mock.side_effect
 
 
-Specialne aseracje dostępne w obiekcie
+Specjalne asercje dostępne w obiekcie
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-W testach jednostkowych powszechnie stosowane są aseracje. Aby to poprawić komfort pracy
+W testach jednostkowych powszechnie stosowane są asercje. Aby poprawić komfort pracy
 biblioteka ``mock`` zawiera wbudowane funkcje asercji, które odwołują się do wyżej
 wymienionych atrybutów:
 
@@ -428,13 +431,13 @@ Jak działa Patch?
 -----------------
 
 Mocki można bardzo prosto wprowadzić do testów w przypadku gdy obiekty przyjmują klasy
-lub instancje z zewnątrz. Wystarczy utworzyć instancję klasy Mock i przekazać ją jako
+lub instancje z zewnątrz. Wystarczy utworzyć instancję klasy ``Mock`` i przekazać ją jako
 obiekt do systemu. Jednakże, gdy utworzony kod wykorzystuje wewnątrz inn moduły które
-są zaszyte w kodzie, takie proste przekazanie obiektu Mock nie zadziała. W takich
-przypadkiach pomaga nam `patch` obiektu.
+są zaszyte w kodzie, takie proste przekazanie obiektu ``Mock`` nie zadziała. W takich
+przypadkach pomaga nam `patch` obiektu.
 
 Patch oznacza zastąpienie obiektu wywoływalnego wewnątrz kodu. Dzięki temu możemy
-fałszować obiekty będące zaszyte w kodzie, nie modyfikując samego kodu. Patchowanie jest
+fałszować obiekty zaszyte w kodzie, nie modyfikując samego kodu. Patchowanie jest
 wykonywane w czasie wykonywania testu.
 
 W jaki sposób tworzyć patch?
@@ -481,6 +484,7 @@ tworzenia patch wygląda nieco inaczej.
 
     @patch('models.SpecialModel')
     def test_patch_pony(mockspecialmodel):
+        mockspecialmodel.return_value = 42
 
 Więcej szczegółów znajdziemy w dokumentacji https://docs.python.org/3/library/unittest.mock.html#where-to-patch.
 
@@ -488,18 +492,18 @@ Więcej szczegółów znajdziemy w dokumentacji https://docs.python.org/3/librar
 Jak działa ``autospec``?
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Efekt jego wykorzystania jest bardzo podobny do atrybutu ``spec`` podczas tworzenia Mock.
+Efekt jego wykorzystania jest bardzo podobny do atrybutu ``spec`` podczas tworzenia ``Mock``.
 Tworząc patch ``patch_A`` z klasy ``A`` będzie on miał takie same metody czy atrybuty
 jak klasa ``A``. Wykorzystując ``autospec`` nie można fałszować żadnych innych atrybutów,
 które nie są zdefiniowane w rzeczywistej klasie.
 
 ``autospec`` można wywołać na dwa sposoby: ``autospec=True`` lub ``autospec=some_object``.
-Podanie wartości ``True`` będzie na tworzyć Mock z dokładnymi parametrami na podstawie
+Podanie wartości ``True`` będzie tworzyć ``Mock`` z dokładnymi parametrami na podstawie
 patchowanej klasy/funkcji. Podanie wartości konkretnego obiektu utworzy nam taki właśnie
 obiekt.
 
 
-Proste testowanie z Mock
+Proste testowanie z ``Mock``
 ------------------------
 
 Celem metod dostarczanych przez pozorowane obiekty jest umożliwienie nam sprawdzenia,
@@ -516,8 +520,8 @@ jakie metody wywoływaliśmy na próbce i jakie parametry wykorzystaliśmy w wyw
 
 Pierwszą rzeczą jaką chcemy przetestować jest sprawdzenie czy została wywołana jakaś metoda.
 Aby tego dokonać wykorzystujemy jedną z specjalnych metod. Utworzyliśmy klasę która jako
-argument przyjmuje obiekt który nawiazuje połączenie poprzez metodę `connect`. Również
-posidamy drugą metodę `setup`, która będzie ustawiać odpowiednie argumenty dla naszego obiektu.
+argument przyjmuje obiekt który nawiązuje połączenie poprzez metodę `connect`. Również
+posiadamy drugą metodę `setup`, która będzie ustawiać odpowiednie argumenty dla naszego obiektu.
 
 
 .. code-block:: python
@@ -543,7 +547,7 @@ mock. Wywołując metodę `assert_called_with` sprawdzamy czy dana metoda zosta�
 
 
 W drugim teście sprawdzimy czy zostały przekazane odpowiednie parametry dla wywoływanej metody.
-Aby to sprawdzić wykorzystujemy inną metodę specialną `assert_called_with`.
+Aby to sprawdzić wykorzystujemy inną metodę specjalną `assert_called_with`.
 
 .. code-block:: python
 
@@ -572,7 +576,7 @@ naszego kodu. Poniżej zademonstruję przykład wykorzystujący wbudowaną bibli
             return self.filename, self.original_path, os.path.abspath(self.filename)
 
 Normalne wywołanie tej klasy spowoduje wyświetlenie informacji o pliku (jest to bardzo
-prosta klasa, w realnym świecie była by ona bezuzyteczna, służy ona jedynie aby pokazać
+prosta klasa, w realnym świecie była by ona bezużyteczna, służy ona jedynie aby pokazać
 jak działa `patch`). Inicjując powyższą klasę musimy podać nazwę pliku. Poniżej pokazano
 proste działanie powyższej klasy.
 
@@ -587,8 +591,8 @@ proste działanie powyższej klasy.
     ('some_file.txt', 'some_file.txt', '/home/xxx/some_file.txt')
 
 
-Pisząc testy będziemy chcieli sprawdzić czy czy powyżej zwracane wartości sa poprawne. Jako
-pierwsze sprawdzimy czy waertość ``filename`` zwraca nam poprawnie nazwę.
+Pisząc testy będziemy chcieli sprawdzić czy czy powyżej zwracane wartości są poprawne. Jako
+pierwsze sprawdzimy czy wartość ``filename`` zwraca nam poprawnie nazwę.
 
 .. code-block:: python
 
@@ -628,11 +632,11 @@ podczas tworzenia obiektu klasy.
         assert fi.original_path == relative_path
 
 Utworzyliśmy jednak dodatkową metodę ``get_info``, która zwraca nam krotkę z dwoma powyżej
-przetestowanymi wartościami oraz śieżkę absolutną do pliku. I tutaj jest mały problem.
-Uruchamiając testy na różnych komuoterach prawdopodobnie absolutna ścieżka do pliku będzie
+przetestowanymi wartościami oraz ścieżkę absolutną do pliku. I tutaj jest mały problem.
+Uruchamiając testy na różnych komputerach prawdopodobnie absolutna ścieżka do pliku będzie
 różna (zależna od miejsca gdzie został uruchomiony projekt). Aby móc przetestować tę część
 kodu musimy posłużyć się ``patch``. Poniżej został pokazany kod w jaki sposób utworzyć łatkę
-na moduł ``os.path.abspath`` z wukorzystaniem kontekst menadżera.
+na moduł ``os.path.abspath`` z wykorzystaniem kontekst menadżera.
 
 .. code-block:: python
 
@@ -647,7 +651,7 @@ na moduł ``os.path.abspath`` z wukorzystaniem kontekst menadżera.
             assert fi.get_info() == (filename, original_path, test_abspath)
 
 Zamiast korzystać z kontekstu menadżera możemy wykorzystać dekorator. W takim przypadku
-dodajemy jedną zmienną to funkcji testującej, która zwróci nam Mock obiektu ``abspath_mock``.
+dodajemy jedną zmienną to funkcji testującej, która zwróci nam ``Mock`` obiektu ``abspath_mock``.
 
 .. code-block:: python
 
@@ -665,7 +669,7 @@ dodajemy jedną zmienną to funkcji testującej, która zwróci nam Mock obiektu
 Wykorzystanie kilku ``patch``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Wykorzystując nasz wcześniejszy przykad, możemy dodać do naszej klasy zwrócenie wielkości
+Wykorzystując nasz wcześniejszy przykład, możemy dodać do naszej klasy zwrócenie wielkości
 pliku. Aby przetestować takie zadanie musimy wykorzystać dwa patch w jednym teście.
 Poniższy przykład pokazuje jak to zrobić.
 
@@ -687,8 +691,8 @@ Poniższy przykład pokazuje jak to zrobić.
         assert fi.get_info() == (filename, original_path, test_abspath, test_size)
 
 
-Należy jednak pamiętać o kolejności argumentów w funkcji testujacej. Pierwszy argument funkcji
-jest wartoscią zwracaną przez dekorator znajdujacy się najbliżej funkcji. Dlaczego tak jest?
+Należy jednak pamiętać o kolejności argumentów w funkcji testującej. Pierwszy argument funkcji
+jest wartością zwracaną przez dekorator znajdujący się najbliżej funkcji. Dlaczego tak jest?
 Poniższy przedstawiono funkcję która została obudowana dwoma dekoratorami.
 
 .. code-block:: python
@@ -774,8 +778,8 @@ Istnieje kilka sposobów rozwiązania tego problemu, ale wszystkie z nich wykorz
 umożliwia nam utworzenia ``patch``.
 
 W pierwszym teście staramy się tworzyć ``patch`` bezpośrednio na obiekcie ``datetime.datetime.now``,
-prubując wpływająć na wbudowany moduł ``datetime``. Plik logger.py jednak importuje moduł ``datetime``,
-dzięki czemu staje się on lokalnym symbolem w module ``logger``. Ta cecha jest klucz do
+próbując wpłynąć na wbudowany moduł ``datetime``. Plik logger.py jednak importuje moduł ``datetime``,
+dzięki czemu staje się on lokalnym symbolem w module ``logger``. Ta cecha jest kluczowa do
 rozwiązania naszego problemu i utworzenia ``patch``.
 
 .. code-block:: python
@@ -795,7 +799,7 @@ W tym teście zmieniliśmy dwie rzeczy. Najpierw łatamy moduł zaimportowany do
 musimy załatać cały moduł, ponieważ jest to plik importowany przez ``logger.py``.
 
 Próbując utworzyć ``patch`` dla całego modułu ``logger.datetime.datetime.now`` również
-otrzymay komunikat z błędem, poniważ obiekt jest on wciąż niezmienny.
+otrzymamy komunikat z błędem, ponieważ obiekt jest wciąż niezmienny.
 
 Innym możliwym rozwiązaniem tego problemu jest utworzenie funkcji, która wywołuje
 niezmienny obiekt i zwraca jego wartość.
@@ -807,7 +811,7 @@ Wykorzystanie pytest-mock
 Już wiemy jak działa obiekt ``Mock``, ``MagicMock`` czy ``patch``. Korzystając z dodatku
 ``pytest-mock`` mamy możliwość w jeszcze prostszy sposób używania tych właśnie funkcji.
 Nie musimy korzystać z dekoratora i zastanawiać się która wartość jest pierwsza. Jedyne
-co robimy to wykrzystujemy fixture ``mocker``.
+co robimy to wykorzystujemy fixture ``mocker``.
 
 .. code-block:: python
 
@@ -859,8 +863,8 @@ co robimy to wykrzystujemy fixture ``mocker``.
     * mocker.patch.object
     * mocker.patch.multiple
     * mocker.patch.dict
-    * mocker.stopall()
-    * mocker.resetall()
+    * mocker.stopall
+    * mocker.resetall
 
 
 .. note::
