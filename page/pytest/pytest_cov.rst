@@ -6,7 +6,7 @@ Coverage jest pluginem sprawdzającym pokrycie kodu testami wyrażone w procenta
 pytest-cov_ jest dodatkiem do ``pytest`` ułatwiający pracę z `coverage`_ - oryginalnym
 pluginem napisanym dla języka python. Dodatek ten oprócz wszystkich możliwości standardowej
 biblioteki, pozwala dodatkowo uruchomić sprawdzenie pokrycia kodu podczas testowana
-(dodatkowe parametry do pytest), pozwala wraz z pluginem `pytest-xdist` uruchimić
+(dodatkowe parametry do pytest), pozwala wraz z pluginem `pytest-xdist` uruchomić
 testowanie na kilku wątkach.
 
 
@@ -31,7 +31,7 @@ uruchomienia konfiguracji. Więcej informacji o konfiguracji znajdziemy w `dokum
     omit = tests/*
 
 
-Uruchomienie pytest wraz ze wskazaniem pliku do kofiguracji dla ``coverage``.
+Uruchomienie pytest wraz ze wskazaniem pliku do konfiguracji dla ``coverage``.
 
 .. code-block:: bash
 
@@ -48,11 +48,11 @@ Posiadamy kilka opcji podczas generowania raportów:
 * html - generowanie raportu html
 * xml - generowanie raportu xml
 * annotate - tworzy nam kopię plików i oznacza w nich co zostało przetestowane
-* :skip-covered - opcja z pominięciem kodu który jest przetestowany w 100%
+* :skip-covered - opcja z pominięciem kodu, który jest przetestowany w 100%
 
 
-``skip-covered`` można łączyć wraz z innymi generatorami w celu pominięcia raportu który jest
-pokryty w 100%.
+``skip-covered`` można łączyć wraz z innymi generatorami w celu pominięcia raportu,
+który jest pokryty w 100%.
 
 
 .. code-block:: bash
@@ -82,22 +82,22 @@ pokryty w 100%.
              --cov=myproj tests/
 
 
-Debagowanie i IDE
+Debugowanie i IDE
 -----------------
 
 Podczas gdy mamy zainstalowany dodatek używa on ``sys.settrace`` jako dostęp do kontekstu.
 Dlatego wykorzystując jakiekolwiek IDE należy wyłączyć plugin aby nie powodował problemów
-podczas wykorzystywnia np. ``break point``.
+podczas wykorzystywania np. ``breakpoint``.
 
 .. code-block:: bash
 
-    $ pytest –no-cov
+    $ pytest --no-cov
 
 
 Markery
 -------
 
-Jest to marker pozwalający nam na całkowite wyłączenie konkretnego testu podczas tworzenia
+:code:`pytest.marker.no_cover` jest to marker pozwalający nam na całkowite wyłączenie konkretnego testu podczas tworzenia
 raportu kodu pokrytego testami.
 
 .. code-block:: python

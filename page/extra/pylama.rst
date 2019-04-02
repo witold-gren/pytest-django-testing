@@ -31,7 +31,7 @@ Instalacja
 Ustawienia
 ----------
 
-Ustawienia tego modułu można dokonać w kilku plikach:
+Ustawienia tego modułu można dokonać w jednym z poniższych plików:
 
 * pylama.ini
 * setup.cfg
@@ -62,7 +62,7 @@ Można również ustawić opcje specjalnego sprawdzania kodu dla poszczególnych
     max_line_length = 100
     disable = R
 
-Ostanią możliwością jest ustawienie opcji dla pliku (lub grupy plików) w sekcjach.
+Ostatnią możliwością jest ustawienie opcji dla pliku (lub grupy plików) w sekcjach.
 Opcje te mają wyższy priorytet niż sekcja "pylama".
 
 .. code-block:: bash
@@ -109,7 +109,7 @@ wartość CC          Interpretacja
 ==================  ===============
 
 
-Możliwości modułu Radom
+Możliwości modułu Radon
 -----------------------
 
 * obliczenie złożoność cyklomatycznej

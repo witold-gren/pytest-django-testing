@@ -12,7 +12,7 @@ Wtyczka pytest-xdist rozszerza pytest o kilka unikalnych trybów wykonywania tes
   do czasu aż nie przejdą poprawnie.
 
 * ``wieloprocesowe testowanie`` (`multiprocess load-balancing`): jeśli posiadasz wiele
-  procesorów lub hostów, możesz ich użyć do złożonego testowawnia. Pozwala to przyspieszyć
+  procesorów lub hostów, możesz ich użyć do złożonego testowania. Pozwala to przyspieszyć
   wykonywanie testów oraz pozwala skorzystać ze zasobów zdalnych maszyn.
 
 * ``pokrycie wieloplatformowe`` (`multi-platform coverage`): pozwala określić różne
@@ -50,11 +50,11 @@ Uruchomienie testów w trybie `looponfailing`
 
 Tryb ten jest wykorzystywany podczas refaktoryzacji kodu. Zakładając, że występują
 testy które nie przechodzą, ``pytest`` będzie oczekiwać na zmiany w plikach które,
-zmieniają test a natępnie ponownie uruchomią zestaw testów. Zmiany w plikach są wykrywane
+zmieniają test a następnie ponownie uruchomią zestaw testów. Zmiany w plikach są wykrywane
 przez przeglądanie katalogu głównego root komputerów oraz ich zawartości (rekursywnie).
 
 Niestety nie ma możliwości wykluczenia katalogów, sprawdzamy korzeń root oraz wszystkie
-fildery i pliki zagnieżdżone. Jest to problemem kiedy struktura projektu jest zbudowana
+foldery i pliki zagnieżdżone. Jest to problemem kiedy struktura projektu jest zbudowana
 w niepoprawny sposób.
 
 .. code-block:: bash
@@ -76,7 +76,7 @@ Uruchamianie testów na zdalnych serwerach poprzez socket
     $ pytest -d --tx socket=192.168.1.102:8888 --rsyncdir paczka
 
 
-Uruchamianie testów na wielu platformach jednoczesnie
+Uruchamianie testów na wielu platformach jednocześnie
 
 .. code-block:: bash
 
