@@ -3,12 +3,12 @@ Pytest Mock
 ===========
 
 Pytest-mock jest pluginem ułatwiającym tworzenie mocków w testach. Nie musimy importować
-modułu Mock, patch i innych, są one dostępne bespośrednio jako fixture. Jednak aby zacząć
+modułu Mock, patch i innych, są one dostępne bezpośrednio jako fixture. Jednak aby zacząć
 z niego korzystać musimy zrozumieć czym jest Mock oraz w jaki wposób działa. Pytest-mock
-nie robi żadnej magi wokoło modułu mocków, jednak jeśli nie rozumiemy jak działa obiekt
+nie robi żadnej magii wokoło modułu mocków, jednak jeśli nie rozumiemy jak działa obiekt
 Mock będziemy mieli problem z zrozumieniem w jaki sposób z niego korzytać.
 
-Czym jest mokowanie? Jesy to symulowaniem działania obiektu. Mokowanie obiektów jest
+Czym jest mokowanie? Jest to symulowanie działania obiektu. Mokowanie obiektów jest
 bardzo dobrym narzędziem. Jednak należy uważać z jego nadużywaniem. Dobrym miejscem do
 ich wykorzystania są:
 
@@ -77,9 +77,9 @@ Aby skorzystać z obiektu Mock należy go zaimportować. W python 2 importujemy 
 (wczesniej należy zainstalować bibliotekę ``pip install mock``) natomiast w pythonie 3
 importujemy go z modułu unittest ``from unittest import mock``.
 
-Utworzenie Mock odbywa się poprzez utworzene obiektu klasy Mock. Obiekt ten posiada szczegulną
-własność, potrafi w locie utworzyć atrybuty i metody które są mu potrzebne. Warto tworząc
-obiekt mock podać atrybut ``name``, dzięki temu będziemy wiedzieli jaki mock aktualnie
+Utworzenie Mock odbywa się poprzez utworzenie obiektu klasy Mock. Obiekt ten posiada szczególną
+własność, potrafi w locie utworzyć atrybuty i metody, które są mu potrzebne. Warto, tworząc
+obiekt mock, podać atrybut ``name``, dzięki temu będziemy wiedzieli jaki mock aktualnie
 jest uruchomiony.
 
 .. code-block:: python
@@ -180,7 +180,7 @@ funkcji `__init__` nie są dostępne w samym obiekcie.
 Atrybut ``return_value``
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Jest to atrybut dzięki któremu określamy jaka powinna zostać zwrócona wartość dla
+Jest to atrybut, dzięki któremu określamy jaka powinna zostać zwrócona wartość dla
 wywoływanego atrybutu lub metody.
 
 .. code-block:: python
@@ -189,8 +189,8 @@ wywoływanego atrybutu lub metody.
     >>> m.some attribute()
     42
 
-Również tworząc nowy obiekt możemy podać parametr ``return_value``. Dzięki któremu,
-wywołanie danego mocka zpowoduje zwrócenie konkretnej wartości.
+Również tworząc nowy obiekt możemy podać parametr ``return_value``, dzięki któremu
+wywołanie danego mocka spowoduje zwrócenie konkretnej wartości.
 
 .. code-block:: python
 
@@ -241,8 +241,8 @@ Jest atrybutem który akceptuje trzy różne wartości obiektów:
         raise effect
     ValueError: A custom value error
 
-Podając jako wartość listę, krotkę lub obiekt podobny to przy każdym wywołaniu tej metody
-zostanie zwrócony kolejna wartość znajdująca się w obiekcie iterowalnym.
+Podając jako wartość listę, krotkę lub obiekt podobny, przy każdym wywołaniu tej metody
+zostanie zwrócona kolejna wartość znajdująca się w obiekcie iterowalnym.
 
 .. code-block:: python
 
@@ -291,7 +291,7 @@ również ustawić konkretną klasę, a wywołanie takiej metody spowoduje utwor
     4622375904
 
 Tworząc nowy mock również możemy ustawić wartość ``side_effect`` dzięki której wywołanie
-takiego moka spowoduje np. wyrzucenie wyjątku, lub przeliczenie konkretnej wartości.
+takiego mocka spowoduje np. wyrzucenie wyjątku, lub przeliczenie konkretnej wartości.
 
 .. code-block:: python
 
@@ -311,8 +311,8 @@ MagicMock jest podklasą klasy Mock.
 
     class MagicMock(MagicMixin, Mock)
 
-W rezultacie MagicMock zapewnia wszystko, co zapewnia Mock oraz jak można się spodziewać potrafi nieco więcej.
-Zamiast myśleć o Mocku jako o uboższej wersji MagicMocka, pomyśl o MagicMock jako rozszerzonej wersji Mock.
+W rezultacie MagicMock zapewnia wszystko, co zapewnia Mock oraz, jak można się spodziewać, potrafi nieco więcej.
+Zamiast myśleć o Mock jako o uboższej wersji MagicMocka, pomyśl o MagicMock jako rozszerzonej wersji Mock.
 To powinno odpowiedzieć na pytanie o to, dlaczego Mock istnieje i co zapewnia Mock a co MagicMock.
 
 Jedną i najważniejszą różnicą jest fakt, że MagicMock zapewnia tworzenie "magicznych" metod
@@ -353,8 +353,8 @@ Możesz "zobaczyć" metody dodane do MagicMock, ponieważ metody te są wywoływ
     ['__int__', '__len__', 'assert_any_call', 'assert_called_once_with', ...]
 
 Dlaczego więc nie używać MagicMock przez cały czas? Postaram się postawić inne pytanie:
-Czy rzeczywiście potezebujemy domyślnych implementacjami metod magicznych?
-Przykład? Czy wywołanie indeksu na obieknie ``mocked_object[1]`` rzeczywiście powinno
+Czy rzeczywiście potrzebujemy domyślnych implementacjami metod magicznych?
+Przykład? Czy wywołanie indeksu na obiekcie ``mocked_object[1]`` rzeczywiście powinno
 zwrócić wartość zamiast błędu? Czy możesz zaakceptować wszystkie niezamierzone
 konsekwencje z powodu zastosowania automatycznie utworzonych metod magicznych?
 Jeśli odpowiedź na te pytania brzmi "tak", możesz korzystać z ``MagicMock``.
@@ -403,7 +403,7 @@ Specialne metody i atrybuty obiektu
 Specialne aseracje dostępne w obiekcie
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-W testach jednostkowych powszechnie stosowane są aseracje. Aby to poprawić komfort pracy
+W testach jednostkowych powszechnie stosowane są aseracje. Aby poprawić komfort pracy
 biblioteka ``mock`` zawiera wbudowane funkcje asercji, które odwołują się do wyżej
 wymienionych atrybutów:
 
@@ -429,9 +429,9 @@ Jak działa Patch?
 
 Mocki można bardzo prosto wprowadzić do testów w przypadku gdy obiekty przyjmują klasy
 lub instancje z zewnątrz. Wystarczy utworzyć instancję klasy Mock i przekazać ją jako
-obiekt do systemu. Jednakże, gdy utworzony kod wykorzystuje wewnątrz inn moduły które
+obiekt do systemu. Jednakże, gdy utworzony kod wykorzystuje wewnątrzne moduły które
 są zaszyte w kodzie, takie proste przekazanie obiektu Mock nie zadziała. W takich
-przypadkiach pomaga nam `patch` obiektu.
+przypadkach pomaga nam `patch` obiektu.
 
 Patch oznacza zastąpienie obiektu wywoływalnego wewnątrz kodu. Dzięki temu możemy
 fałszować obiekty będące zaszyte w kodzie, nie modyfikując samego kodu. Patchowanie jest
