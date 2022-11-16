@@ -26,7 +26,7 @@ Instalacja
     Warto zainstalować najnowszą wersję 2.0.1. Obecnie tylko ta wersja zapewnia wsparcie dla najnowszej wersji factoryboy 2.10.0
 
 
-Daklarowanie i tworzenie fabryk
+Deklarowanie i tworzenie fabryk
 -------------------------------
 
 Tworzenie fabryki polega na utworzeniu klasy która odzwierciedla pola klasy dla której tworzymy
